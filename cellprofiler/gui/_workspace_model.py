@@ -1,9 +1,14 @@
+from cellprofiler_core import workspace
+from cellprofiler_core.constants.measurement import EXPERIMENT
+from cellprofiler_core.constants.measurement import GROUP_INDEX
+from cellprofiler_core.constants.measurement import GROUP_NUMBER
+from cellprofiler_core.constants.measurement import IMAGE
+from cellprofiler_core.constants.measurement import M_GROUPING_TAGS
+
 import cellprofiler.gui.figure
-import cellprofiler_core.measurement
-import cellprofiler_core.workspace
 
 
-class Workspace(cellprofiler_core.workspace.Workspace):
+class Workspace(workspace.Workspace):
     def create_or_find_figure(self, title=None, subplots=None, window_name=None):
         assert not self.__in_background
 
@@ -32,20 +37,13 @@ class Workspace(cellprofiler_core.workspace.Workspace):
 
         window_name = cellprofiler.gui.figure.window_name(module)
 
-        if self.measurements.has_feature(
-            cellprofiler_core.measurement.EXPERIMENT,
-            cellprofiler_core.measurement.M_GROUPING_TAGS,
-        ):
+        if self.measurements.has_feature(EXPERIMENT, M_GROUPING_TAGS,):
             group_number = self.measurements[
-                cellprofiler_core.measurement.IMAGE,
-                cellprofiler_core.measurement.GROUP_NUMBER,
-                image_set_number,
+                IMAGE, GROUP_NUMBER, image_set_number,
             ]
 
             group_index = self.measurements[
-                cellprofiler_core.measurement.IMAGE,
-                cellprofiler_core.measurement.GROUP_INDEX,
-                image_set_number,
+                IMAGE, GROUP_INDEX, image_set_number,
             ]
 
             title = "{} #{}, image cycle #{}, group #{}, group index #{}".format(

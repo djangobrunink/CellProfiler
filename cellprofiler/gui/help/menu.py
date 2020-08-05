@@ -6,7 +6,6 @@ import cellprofiler.gui.help.content
 import cellprofiler.gui.help.search
 import cellprofiler.gui.htmldialog
 import cellprofiler.gui.menu
-import cellprofiler_core.modules
 
 
 class Menu(cellprofiler.gui.menu.Menu):
@@ -71,6 +70,13 @@ class Menu(cellprofiler.gui.menu.Menu):
         )
 
         self.append(
+            "Identifying 3D objects",
+            contents=cellprofiler.gui.help.content.read_content(
+                "other_3d_identify.rst"
+            ),
+        )
+
+        self.append(
             "Batch Processing",
             contents=cellprofiler.gui.help.content.read_content("other_batch.rst"),
         )
@@ -117,13 +123,6 @@ class Menu(cellprofiler.gui.menu.Menu):
 
     def __legacy_menu(self):
         legacy_menu = cellprofiler.gui.menu.Menu(self.frame)
-
-        legacy_menu.append(
-            "Load Modules",
-            contents=cellprofiler.gui.help.content.read_content(
-                "legacy_load_modules.rst"
-            ),
-        )
 
         legacy_menu.append(
             "MATLAB format images",

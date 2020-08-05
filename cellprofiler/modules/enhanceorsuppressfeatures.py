@@ -1,5 +1,3 @@
-# coding=utf-8
-
 """
 EnhanceOrSuppressFeatures
 =========================
@@ -29,10 +27,14 @@ import skimage.exposure
 import skimage.filters
 import skimage.morphology
 import skimage.transform
+from cellprofiler_core.image import Image
+from cellprofiler_core.module import ImageProcessing
+from cellprofiler_core.setting import Binary
+from cellprofiler_core.setting.choice import Choice
+from cellprofiler_core.setting.range import IntegerRange
+from cellprofiler_core.setting.text import Float
+from cellprofiler_core.setting.text import Integer
 
-import cellprofiler_core.image
-import cellprofiler_core.module
-import cellprofiler_core.setting
 from cellprofiler.modules import _help
 
 ENHANCE = "Enhance"
@@ -52,7 +54,7 @@ N_GRADIENT = "Line structures"
 N_TUBENESS = "Tubeness"
 
 
-class EnhanceOrSuppressFeatures(cellprofiler_core.module.ImageProcessing):
+class EnhanceOrSuppressFeatures(ImageProcessing):
     module_name = "EnhanceOrSuppressFeatures"
 
     variable_revision_number = 7
@@ -60,7 +62,7 @@ class EnhanceOrSuppressFeatures(cellprofiler_core.module.ImageProcessing):
     def create_settings(self):
         super(EnhanceOrSuppressFeatures, self).create_settings()
 
-        self.method = cellprofiler_core.setting.Choice(
+        self.method = Choice(
             "Select the operation",
             [ENHANCE, SUPPRESS],
             doc="""\
@@ -75,7 +77,7 @@ designate.
             ),
         )
 
-        self.enhance_method = cellprofiler_core.setting.Choice(
+        self.enhance_method = Choice(
             "Feature type",
             [E_SPECKLES, E_NEURITES, E_DARK_HOLES, E_CIRCLES, E_TEXTURE, E_DIC],
             doc="""\
@@ -140,7 +142,7 @@ This module can enhance several kinds of image features:
             ),
         )
 
-        self.object_size = cellprofiler_core.setting.Integer(
+        self.object_size = Integer(
             "Feature size",
             10,
             2,
@@ -163,7 +165,7 @@ used to calculate an appropriate filter size.
             ),
         )
 
-        self.hole_size = cellprofiler_core.setting.IntegerRange(
+        self.hole_size = IntegerRange(
             "Range of hole sizes",
             value=(1, 10),
             minval=1,
@@ -177,7 +179,7 @@ holes whose diameters fall between these two values.
             ),
         )
 
-        self.smoothing = cellprofiler_core.setting.Float(
+        self.smoothing = Float(
             "Smoothing scale",
             value=2.0,
             minval=0.0,
@@ -214,7 +216,7 @@ this is not recommended.
             ),
         )
 
-        self.angle = cellprofiler_core.setting.Float(
+        self.angle = Float(
             "Shear angle",
             value=0,
             doc="""\
@@ -231,7 +233,7 @@ the shear angle is 180° + 45° = 225°.
             ),
         )
 
-        self.decay = cellprofiler_core.setting.Float(
+        self.decay = Float(
             "Decay",
             value=0.95,
             minval=0.1,
@@ -252,7 +254,7 @@ appears to be a bias in the integration direction.
             ),
         )
 
-        self.neurite_choice = cellprofiler_core.setting.Choice(
+        self.neurite_choice = Choice(
             "Enhancement method",
             [N_TUBENESS, N_GRADIENT],
             doc="""\
@@ -287,7 +289,7 @@ Two methods can be used to enhance neurites:
             ),
         )
 
-        self.speckle_accuracy = cellprofiler_core.setting.Choice(
+        self.speckle_accuracy = Choice(
             "Speed and accuracy",
             choices=[S_FAST, S_SLOW],
             doc="""\
@@ -303,7 +305,7 @@ Two methods can be used to enhance neurites:
             ),
         )
 
-        self.wants_rescale = cellprofiler_core.setting.Binary(
+        self.wants_rescale = Binary(
             "Rescale result image",
             False,
             doc="""\
@@ -397,9 +399,7 @@ the output easier to display.
         else:
             raise ValueError("Unknown filtering method: %s" % self.method)
 
-        result_image = cellprofiler_core.image.Image(
-            result, parent_image=image, dimensions=image.dimensions
-        )
+        result_image = Image(result, parent_image=image, dimensions=image.dimensions)
 
         workspace.image_set.add(self.y_name.value, result_image)
 
@@ -480,7 +480,7 @@ the output easier to display.
                     )
 
                     result[index] = (
-                            -hessian[:, :, 0] * (hessian[:, :, 0] < 0) * (sigma ** 2)
+                        -hessian[:, :, 0] * (hessian[:, :, 0] < 0) * (sigma ** 2)
                     )
             else:
                 hessian = centrosome.filter.hessian(
@@ -521,15 +521,15 @@ the output easier to display.
         )
 
         img_mean = (
-                skimage.filters.gaussian(data, sigma, mode="constant", multichannel=False)
-                / gmask
+            skimage.filters.gaussian(data, sigma, mode="constant", multichannel=False)
+            / gmask
         )
 
         img_squared = (
-                skimage.filters.gaussian(
-                    data ** 2, sigma, mode="constant", multichannel=False
-                )
-                / gmask
+            skimage.filters.gaussian(
+                data ** 2, sigma, mode="constant", multichannel=False
+            )
+            / gmask
         )
 
         result = img_squared - img_mean ** 2
