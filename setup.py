@@ -78,6 +78,8 @@ setuptools.setup(
         "scikit-learn>=0.20",
         "scipy>=1.4.1",
         "six",
+        "torch==1.6.0+cpu",
+        "torchvision==0.7.0+cpu",
         "wxPython==4.0.7.post2",
     ],
     license="BSD",

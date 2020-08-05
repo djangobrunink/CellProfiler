@@ -37,6 +37,7 @@ builtin_modules = [
     "identifyprimaryobjects",
     "identifysecondaryobjects",
     "identifytertiaryobjects",
+    "identifyzebrafish",
     "imagemath",
     "invertforprinting",
     "labelimages",
