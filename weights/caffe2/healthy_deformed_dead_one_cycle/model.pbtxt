@@ -1,0 +1,6651 @@
+name: "torch-jit-export_predict"
+op {
+  input: "data"
+  output: "573"
+  name: ""
+  type: "Cast"
+  arg {
+    name: "to"
+    i: 1
+  }
+}
+op {
+  input: "573"
+  input: "_wrapped_model.pixel_mean"
+  output: "574"
+  name: ""
+  type: "Sub"
+}
+op {
+  input: "574"
+  input: "_wrapped_model.pixel_std"
+  output: "normalized_data"
+  name: ""
+  type: "Div"
+}
+op {
+  input: "normalized_data"
+  input: "1021"
+  input: "1023"
+  output: "577"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 3
+    ints: 3
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "kernels"
+    ints: 7
+    ints: 7
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "577"
+  output: "579"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "579"
+  output: "580"
+  name: ""
+  type: "MaxPool"
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+}
+op {
+  input: "580"
+  input: "1025"
+  input: "1027"
+  output: "581"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "581"
+  output: "583"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "583"
+  input: "1029"
+  input: "1031"
+  output: "584"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "584"
+  output: "586"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "586"
+  input: "1033"
+  input: "1035"
+  output: "587"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "580"
+  input: "1037"
+  input: "1039"
+  output: "589"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "587"
+  input: "589"
+  output: "591"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "591"
+  output: "592"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "592"
+  input: "1041"
+  input: "1043"
+  output: "593"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "593"
+  output: "595"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "595"
+  input: "1045"
+  input: "1047"
+  output: "596"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "596"
+  output: "598"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "598"
+  input: "1049"
+  input: "1051"
+  output: "599"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "599"
+  input: "592"
+  output: "601"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "601"
+  output: "602"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "602"
+  input: "1053"
+  input: "1055"
+  output: "603"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "603"
+  output: "605"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "605"
+  input: "1057"
+  input: "1059"
+  output: "606"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "606"
+  output: "608"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "608"
+  input: "1061"
+  input: "1063"
+  output: "609"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "609"
+  input: "602"
+  output: "611"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "611"
+  output: "612"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "612"
+  input: "1065"
+  input: "1067"
+  output: "613"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "613"
+  output: "615"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "615"
+  input: "1069"
+  input: "1071"
+  output: "616"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "616"
+  output: "618"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "618"
+  input: "1073"
+  input: "1075"
+  output: "619"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "612"
+  input: "1077"
+  input: "1079"
+  output: "621"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "619"
+  input: "621"
+  output: "623"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "623"
+  output: "624"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "624"
+  input: "1081"
+  input: "1083"
+  output: "625"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "625"
+  output: "627"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "627"
+  input: "1085"
+  input: "1087"
+  output: "628"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "628"
+  output: "630"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "630"
+  input: "1089"
+  input: "1091"
+  output: "631"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "631"
+  input: "624"
+  output: "633"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "633"
+  output: "634"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "634"
+  input: "1093"
+  input: "1095"
+  output: "635"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "635"
+  output: "637"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "637"
+  input: "1097"
+  input: "1099"
+  output: "638"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "638"
+  output: "640"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "640"
+  input: "1101"
+  input: "1103"
+  output: "641"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "641"
+  input: "634"
+  output: "643"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "643"
+  output: "644"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "644"
+  input: "1105"
+  input: "1107"
+  output: "645"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "645"
+  output: "647"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "647"
+  input: "1109"
+  input: "1111"
+  output: "648"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "648"
+  output: "650"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "650"
+  input: "1113"
+  input: "1115"
+  output: "651"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "651"
+  input: "644"
+  output: "653"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "653"
+  output: "654"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "654"
+  input: "1117"
+  input: "1119"
+  output: "655"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "655"
+  output: "657"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "657"
+  input: "1121"
+  input: "1123"
+  output: "658"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "658"
+  output: "660"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "660"
+  input: "1125"
+  input: "1127"
+  output: "661"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "654"
+  input: "1129"
+  input: "1131"
+  output: "663"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "661"
+  input: "663"
+  output: "665"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "665"
+  output: "666"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "666"
+  input: "1133"
+  input: "1135"
+  output: "667"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "667"
+  output: "669"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "669"
+  input: "1137"
+  input: "1139"
+  output: "670"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "670"
+  output: "672"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "672"
+  input: "1141"
+  input: "1143"
+  output: "673"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "673"
+  input: "666"
+  output: "675"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "675"
+  output: "676"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "676"
+  input: "1145"
+  input: "1147"
+  output: "677"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "677"
+  output: "679"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "679"
+  input: "1149"
+  input: "1151"
+  output: "680"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "680"
+  output: "682"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "682"
+  input: "1153"
+  input: "1155"
+  output: "683"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "683"
+  input: "676"
+  output: "685"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "685"
+  output: "686"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "686"
+  input: "1157"
+  input: "1159"
+  output: "687"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "687"
+  output: "689"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "689"
+  input: "1161"
+  input: "1163"
+  output: "690"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "690"
+  output: "692"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "692"
+  input: "1165"
+  input: "1167"
+  output: "693"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "693"
+  input: "686"
+  output: "695"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "695"
+  output: "696"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "696"
+  input: "1169"
+  input: "1171"
+  output: "697"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "697"
+  output: "699"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "699"
+  input: "1173"
+  input: "1175"
+  output: "700"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "700"
+  output: "702"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "702"
+  input: "1177"
+  input: "1179"
+  output: "703"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "703"
+  input: "696"
+  output: "705"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "705"
+  output: "706"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "706"
+  input: "1181"
+  input: "1183"
+  output: "707"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "707"
+  output: "709"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "709"
+  input: "1185"
+  input: "1187"
+  output: "710"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "710"
+  output: "712"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "712"
+  input: "1189"
+  input: "1191"
+  output: "713"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "713"
+  input: "706"
+  output: "715"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "715"
+  output: "716"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "716"
+  input: "1193"
+  input: "1195"
+  output: "717"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "717"
+  output: "719"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "719"
+  input: "1197"
+  input: "1199"
+  output: "720"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "720"
+  output: "722"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "722"
+  input: "1201"
+  input: "1203"
+  output: "723"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "723"
+  input: "716"
+  output: "725"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "725"
+  output: "726"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "726"
+  input: "1205"
+  input: "1207"
+  output: "727"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "727"
+  output: "729"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "729"
+  input: "1209"
+  input: "1211"
+  output: "730"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "730"
+  output: "732"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "732"
+  input: "1213"
+  input: "1215"
+  output: "733"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "733"
+  input: "726"
+  output: "735"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "735"
+  output: "736"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "736"
+  input: "1217"
+  input: "1219"
+  output: "737"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "737"
+  output: "739"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "739"
+  input: "1221"
+  input: "1223"
+  output: "740"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "740"
+  output: "742"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "742"
+  input: "1225"
+  input: "1227"
+  output: "743"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "743"
+  input: "736"
+  output: "745"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "745"
+  output: "746"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "746"
+  input: "1229"
+  input: "1231"
+  output: "747"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "747"
+  output: "749"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "749"
+  input: "1233"
+  input: "1235"
+  output: "750"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "750"
+  output: "752"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "752"
+  input: "1237"
+  input: "1239"
+  output: "753"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "753"
+  input: "746"
+  output: "755"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "755"
+  output: "756"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "756"
+  input: "1241"
+  input: "1243"
+  output: "757"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "757"
+  output: "759"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "759"
+  input: "1245"
+  input: "1247"
+  output: "760"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "760"
+  output: "762"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "762"
+  input: "1249"
+  input: "1251"
+  output: "763"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "763"
+  input: "756"
+  output: "765"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "765"
+  output: "766"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "766"
+  input: "1253"
+  input: "1255"
+  output: "767"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "767"
+  output: "769"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "769"
+  input: "1257"
+  input: "1259"
+  output: "770"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "770"
+  output: "772"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "772"
+  input: "1261"
+  input: "1263"
+  output: "773"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "773"
+  input: "766"
+  output: "775"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "775"
+  output: "776"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "776"
+  input: "1265"
+  input: "1267"
+  output: "777"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "777"
+  output: "779"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "779"
+  input: "1269"
+  input: "1271"
+  output: "780"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "780"
+  output: "782"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "782"
+  input: "1273"
+  input: "1275"
+  output: "783"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "783"
+  input: "776"
+  output: "785"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "785"
+  output: "786"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "786"
+  input: "1277"
+  input: "1279"
+  output: "787"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "787"
+  output: "789"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "789"
+  input: "1281"
+  input: "1283"
+  output: "790"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "790"
+  output: "792"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "792"
+  input: "1285"
+  input: "1287"
+  output: "793"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "793"
+  input: "786"
+  output: "795"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "795"
+  output: "796"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "796"
+  input: "1289"
+  input: "1291"
+  output: "797"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "797"
+  output: "799"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "799"
+  input: "1293"
+  input: "1295"
+  output: "800"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "800"
+  output: "802"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "802"
+  input: "1297"
+  input: "1299"
+  output: "803"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "803"
+  input: "796"
+  output: "805"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "805"
+  output: "806"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "806"
+  input: "1301"
+  input: "1303"
+  output: "807"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "807"
+  output: "809"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "809"
+  input: "1305"
+  input: "1307"
+  output: "810"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "810"
+  output: "812"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "812"
+  input: "1309"
+  input: "1311"
+  output: "813"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "813"
+  input: "806"
+  output: "815"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "815"
+  output: "816"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "816"
+  input: "1313"
+  input: "1315"
+  output: "817"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "817"
+  output: "819"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "819"
+  input: "1317"
+  input: "1319"
+  output: "820"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "820"
+  output: "822"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "822"
+  input: "1321"
+  input: "1323"
+  output: "823"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "823"
+  input: "816"
+  output: "825"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "825"
+  output: "826"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "826"
+  input: "1325"
+  input: "1327"
+  output: "827"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "827"
+  output: "829"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "829"
+  input: "1329"
+  input: "1331"
+  output: "830"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "830"
+  output: "832"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "832"
+  input: "1333"
+  input: "1335"
+  output: "833"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "833"
+  input: "826"
+  output: "835"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "835"
+  output: "836"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "836"
+  input: "1337"
+  input: "1339"
+  output: "837"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "837"
+  output: "839"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "839"
+  input: "1341"
+  input: "1343"
+  output: "840"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "840"
+  output: "842"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "842"
+  input: "1345"
+  input: "1347"
+  output: "843"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "843"
+  input: "836"
+  output: "845"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "845"
+  output: "846"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "846"
+  input: "1349"
+  input: "1351"
+  output: "847"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "847"
+  output: "849"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "849"
+  input: "1353"
+  input: "1355"
+  output: "850"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "850"
+  output: "852"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "852"
+  input: "1357"
+  input: "1359"
+  output: "853"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "853"
+  input: "846"
+  output: "855"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "855"
+  output: "856"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "856"
+  input: "1361"
+  input: "1363"
+  output: "857"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "857"
+  output: "859"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "859"
+  input: "1365"
+  input: "1367"
+  output: "860"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "860"
+  output: "862"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "862"
+  input: "1369"
+  input: "1371"
+  output: "863"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "863"
+  input: "856"
+  output: "865"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "865"
+  output: "866"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "866"
+  input: "1373"
+  input: "1375"
+  output: "867"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "867"
+  output: "869"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "869"
+  input: "1377"
+  input: "1379"
+  output: "870"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "870"
+  output: "872"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "872"
+  input: "1381"
+  input: "1383"
+  output: "873"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "873"
+  input: "866"
+  output: "875"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "875"
+  output: "876"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "876"
+  input: "1385"
+  input: "1387"
+  output: "877"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "877"
+  output: "879"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "879"
+  input: "1389"
+  input: "1391"
+  output: "880"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "880"
+  output: "882"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "882"
+  input: "1393"
+  input: "1395"
+  output: "883"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "883"
+  input: "876"
+  output: "885"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "885"
+  output: "886"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "886"
+  input: "1397"
+  input: "1399"
+  output: "887"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "887"
+  output: "889"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "889"
+  input: "1401"
+  input: "1403"
+  output: "890"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "890"
+  output: "892"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "892"
+  input: "1405"
+  input: "1407"
+  output: "893"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "886"
+  input: "1409"
+  input: "1411"
+  output: "895"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "893"
+  input: "895"
+  output: "897"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "897"
+  output: "898"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "898"
+  input: "1413"
+  input: "1415"
+  output: "899"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "899"
+  output: "901"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "901"
+  input: "1417"
+  input: "1419"
+  output: "902"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "902"
+  output: "904"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "904"
+  input: "1421"
+  input: "1423"
+  output: "905"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "905"
+  input: "898"
+  output: "907"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "907"
+  output: "908"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "908"
+  input: "1425"
+  input: "1427"
+  output: "909"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "909"
+  output: "911"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "911"
+  input: "1429"
+  input: "1431"
+  output: "912"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "912"
+  output: "914"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "914"
+  input: "1433"
+  input: "1435"
+  output: "915"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "915"
+  input: "908"
+  output: "917"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "917"
+  output: "918"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "918"
+  input: "_wrapped_model.backbone.fpn_lateral5.weight"
+  input: "_wrapped_model.backbone.fpn_lateral5.bias"
+  output: "919"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "919"
+  input: "_wrapped_model.backbone.fpn_output5.weight"
+  input: "_wrapped_model.backbone.fpn_output5.bias"
+  output: "920"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "919"
+  output: "921"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+}
+op {
+  input: "886"
+  input: "_wrapped_model.backbone.fpn_lateral4.weight"
+  input: "_wrapped_model.backbone.fpn_lateral4.bias"
+  output: "922"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "922"
+  input: "921"
+  output: "923"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "923"
+  input: "_wrapped_model.backbone.fpn_output4.weight"
+  input: "_wrapped_model.backbone.fpn_output4.bias"
+  output: "924"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "923"
+  output: "925"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+}
+op {
+  input: "654"
+  input: "_wrapped_model.backbone.fpn_lateral3.weight"
+  input: "_wrapped_model.backbone.fpn_lateral3.bias"
+  output: "926"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "926"
+  input: "925"
+  output: "927"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "927"
+  input: "_wrapped_model.backbone.fpn_output3.weight"
+  input: "_wrapped_model.backbone.fpn_output3.bias"
+  output: "928"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "927"
+  output: "929"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+}
+op {
+  input: "612"
+  input: "_wrapped_model.backbone.fpn_lateral2.weight"
+  input: "_wrapped_model.backbone.fpn_lateral2.bias"
+  output: "930"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "930"
+  input: "929"
+  output: "931"
+  name: ""
+  type: "Add"
+}
+op {
+  input: "931"
+  input: "_wrapped_model.backbone.fpn_output2.weight"
+  input: "_wrapped_model.backbone.fpn_output2.bias"
+  output: "932"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "920"
+  output: "933"
+  name: ""
+  type: "MaxPool"
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+}
+op {
+  input: "932"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "934"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "934"
+  output: "935"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "935"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "936"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "935"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "937"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "928"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "938"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "938"
+  output: "939"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "939"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "940"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "939"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "941"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "924"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "942"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "942"
+  output: "943"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "943"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "944"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "943"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "945"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "920"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "946"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "946"
+  output: "947"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "947"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "948"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "947"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "949"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "933"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "950"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "950"
+  output: "951"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "951"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "952"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "951"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "953"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "936"
+  input: "937"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.0"
+  output: "954"
+  output: "955"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.75
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "940"
+  input: "941"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.1"
+  output: "956"
+  output: "957"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.75
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "944"
+  input: "945"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.2"
+  output: "958"
+  output: "959"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.75
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "948"
+  input: "949"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.3"
+  output: "960"
+  output: "961"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.75
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "952"
+  input: "953"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.4"
+  output: "962"
+  output: "963"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.015625
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.75
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "954"
+  input: "956"
+  input: "958"
+  input: "960"
+  input: "962"
+  input: "955"
+  input: "957"
+  input: "959"
+  input: "961"
+  input: "963"
+  output: "rpn_rois"
+  name: ""
+  type: "CollectRpnProposals"
+  arg {
+    name: "rpn_max_level"
+    i: 6
+  }
+  arg {
+    name: "rpn_min_level"
+    i: 2
+  }
+  arg {
+    name: "rpn_post_nms_topN"
+    i: 1000
+  }
+}
+op {
+  input: "rpn_rois"
+  output: "965"
+  output: "966"
+  output: "967"
+  output: "968"
+  output: "969"
+  name: ""
+  type: "DistributeFpnProposals"
+  arg {
+    name: "roi_canonical_scale"
+    i: 224
+  }
+  arg {
+    name: "roi_canonical_level"
+    i: 4
+  }
+  arg {
+    name: "roi_max_level"
+    i: 5
+  }
+  arg {
+    name: "roi_min_level"
+    i: 2
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "932"
+  input: "965"
+  output: "970"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "928"
+  input: "966"
+  output: "971"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "924"
+  input: "967"
+  output: "972"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "920"
+  input: "968"
+  output: "roi_feat_fpn.1"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "970"
+  input: "971"
+  input: "972"
+  input: "roi_feat_fpn.1"
+  output: "974"
+  output: "OC2_DUMMY_0"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+}
+op {
+  input: "974"
+  input: "969"
+  output: "975"
+  name: ""
+  type: "BatchPermutation"
+}
+op {
+  input: "975"
+  output: "976"
+  name: ""
+  type: "Flatten"
+  arg {
+    name: "axis"
+    i: 1
+  }
+}
+op {
+  input: "976"
+  input: "_wrapped_model.roi_heads.box_head.fc1.weight"
+  input: "_wrapped_model.roi_heads.box_head.fc1.bias"
+  output: "977"
+  name: ""
+  type: "FC"
+}
+op {
+  input: "977"
+  output: "978"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "978"
+  input: "_wrapped_model.roi_heads.box_head.fc2.weight"
+  input: "_wrapped_model.roi_heads.box_head.fc2.bias"
+  output: "979"
+  name: ""
+  type: "FC"
+}
+op {
+  input: "979"
+  output: "980"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "980"
+  input: "_wrapped_model.roi_heads.box_predictor.cls_score.weight"
+  input: "_wrapped_model.roi_heads.box_predictor.cls_score.bias"
+  output: "981"
+  name: ""
+  type: "FC"
+}
+op {
+  input: "980"
+  input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.weight"
+  input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.bias"
+  output: "982"
+  name: ""
+  type: "FC"
+}
+op {
+  input: "981"
+  output: "983"
+  name: ""
+  type: "Softmax"
+  arg {
+    name: "axis"
+    i: 1
+  }
+}
+op {
+  input: "rpn_rois"
+  output: "984"
+  output: "OC2_DUMMY_1"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+}
+op {
+  input: "984"
+  input: "982"
+  input: "im_info"
+  output: "985"
+  output: "986"
+  name: ""
+  type: "BBoxTransform"
+  arg {
+    name: "weights"
+    floats: 10.0
+    floats: 10.0
+    floats: 5.0
+    floats: 5.0
+  }
+  arg {
+    name: "apply_scale"
+    i: 1
+  }
+  arg {
+    name: "rotated"
+    i: 0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "983"
+  input: "985"
+  input: "986"
+  output: "score_nms"
+  output: "bbox_nms"
+  output: "class_nms"
+  output: "roi_batch_splits_nms"
+  output: "roi_keeps_nms"
+  output: "roi_keeps_size_nms"
+  name: ""
+  type: "BoxWithNMSLimit"
+  arg {
+    name: "score_thresh"
+    f: 0.05000000074505806
+  }
+  arg {
+    name: "nms"
+    f: 0.5
+  }
+  arg {
+    name: "detections_per_im"
+    i: 100
+  }
+  arg {
+    name: "soft_nms_enabled"
+    i: 0
+  }
+  arg {
+    name: "soft_nms_method"
+    s: "linear"
+  }
+  arg {
+    name: "soft_nms_sigma"
+    f: 0.5
+  }
+  arg {
+    name: "soft_nms_min_score_thres"
+    f: 0.0010000000474974513
+  }
+  arg {
+    name: "rotated"
+    i: 0
+  }
+  arg {
+    name: "cls_agnostic_bbox_reg"
+    i: 0
+  }
+  arg {
+    name: "input_boxes_include_bg_cls"
+    i: 0
+  }
+  arg {
+    name: "output_classes_include_bg_cls"
+    i: 0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "bbox_nms"
+  output: "996"
+  output: "997"
+  output: "998"
+  output: "999"
+  output: "1000"
+  name: ""
+  type: "DistributeFpnProposals"
+  arg {
+    name: "roi_canonical_scale"
+    i: 224
+  }
+  arg {
+    name: "roi_canonical_level"
+    i: 4
+  }
+  arg {
+    name: "roi_max_level"
+    i: 5
+  }
+  arg {
+    name: "roi_min_level"
+    i: 2
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "932"
+  input: "996"
+  output: "1001"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "928"
+  input: "997"
+  output: "1002"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "924"
+  input: "998"
+  output: "1003"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "920"
+  input: "999"
+  output: "roi_feat_fpn"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+}
+op {
+  input: "1001"
+  input: "1002"
+  input: "1003"
+  input: "roi_feat_fpn"
+  output: "1005"
+  output: "OC2_DUMMY_2"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+}
+op {
+  input: "1005"
+  input: "1000"
+  output: "input.119"
+  name: ""
+  type: "BatchPermutation"
+}
+op {
+  input: "input.119"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.bias"
+  output: "1007"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "1007"
+  output: "1008"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "1008"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.bias"
+  output: "1009"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "1009"
+  output: "1010"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "1010"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.bias"
+  output: "1011"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "1011"
+  output: "1012"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "1012"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.bias"
+  output: "1013"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "1013"
+  output: "1014"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "1014"
+  input: "_wrapped_model.roi_heads.mask_head.deconv.weight"
+  input: "_wrapped_model.roi_heads.mask_head.deconv.bias"
+  output: "1015"
+  name: ""
+  type: "ConvTranspose"
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+}
+op {
+  input: "1015"
+  output: "1016"
+  name: ""
+  type: "Relu"
+}
+op {
+  input: "1016"
+  input: "_wrapped_model.roi_heads.mask_head.predictor.weight"
+  input: "_wrapped_model.roi_heads.mask_head.predictor.bias"
+  output: "1017"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+}
+op {
+  input: "1017"
+  output: "mask_fcn_probs"
+  name: ""
+  type: "Sigmoid"
+}
+device_option {
+  device_type: 0
+  device_id: 0
+}
+arg {
+  name: "size_divisibility"
+  i: 32
+}
+arg {
+  name: "device"
+  s: "cpu"
+}
+arg {
+  name: "meta_architecture"
+  s: "GeneralizedRCNN"
+}
+external_input: "data"
+external_input: "im_info"
+external_input: "_wrapped_model.pixel_mean"
+external_input: "_wrapped_model.pixel_std"
+external_input: "_wrapped_model.backbone.fpn_lateral2.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral2.bias"
+external_input: "_wrapped_model.backbone.fpn_output2.weight"
+external_input: "_wrapped_model.backbone.fpn_output2.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral3.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral3.bias"
+external_input: "_wrapped_model.backbone.fpn_output3.weight"
+external_input: "_wrapped_model.backbone.fpn_output3.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral4.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral4.bias"
+external_input: "_wrapped_model.backbone.fpn_output4.weight"
+external_input: "_wrapped_model.backbone.fpn_output4.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral5.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral5.bias"
+external_input: "_wrapped_model.backbone.fpn_output5.weight"
+external_input: "_wrapped_model.backbone.fpn_output5.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.0"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.1"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.2"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.3"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.4"
+external_input: "_wrapped_model.roi_heads.box_head.fc1.weight"
+external_input: "_wrapped_model.roi_heads.box_head.fc1.bias"
+external_input: "_wrapped_model.roi_heads.box_head.fc2.weight"
+external_input: "_wrapped_model.roi_heads.box_head.fc2.bias"
+external_input: "_wrapped_model.roi_heads.box_predictor.cls_score.weight"
+external_input: "_wrapped_model.roi_heads.box_predictor.cls_score.bias"
+external_input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.weight"
+external_input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.deconv.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.deconv.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.predictor.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.predictor.bias"
+external_input: "1021"
+external_input: "1023"
+external_input: "1025"
+external_input: "1027"
+external_input: "1029"
+external_input: "1031"
+external_input: "1033"
+external_input: "1035"
+external_input: "1037"
+external_input: "1039"
+external_input: "1041"
+external_input: "1043"
+external_input: "1045"
+external_input: "1047"
+external_input: "1049"
+external_input: "1051"
+external_input: "1053"
+external_input: "1055"
+external_input: "1057"
+external_input: "1059"
+external_input: "1061"
+external_input: "1063"
+external_input: "1065"
+external_input: "1067"
+external_input: "1069"
+external_input: "1071"
+external_input: "1073"
+external_input: "1075"
+external_input: "1077"
+external_input: "1079"
+external_input: "1081"
+external_input: "1083"
+external_input: "1085"
+external_input: "1087"
+external_input: "1089"
+external_input: "1091"
+external_input: "1093"
+external_input: "1095"
+external_input: "1097"
+external_input: "1099"
+external_input: "1101"
+external_input: "1103"
+external_input: "1105"
+external_input: "1107"
+external_input: "1109"
+external_input: "1111"
+external_input: "1113"
+external_input: "1115"
+external_input: "1117"
+external_input: "1119"
+external_input: "1121"
+external_input: "1123"
+external_input: "1125"
+external_input: "1127"
+external_input: "1129"
+external_input: "1131"
+external_input: "1133"
+external_input: "1135"
+external_input: "1137"
+external_input: "1139"
+external_input: "1141"
+external_input: "1143"
+external_input: "1145"
+external_input: "1147"
+external_input: "1149"
+external_input: "1151"
+external_input: "1153"
+external_input: "1155"
+external_input: "1157"
+external_input: "1159"
+external_input: "1161"
+external_input: "1163"
+external_input: "1165"
+external_input: "1167"
+external_input: "1169"
+external_input: "1171"
+external_input: "1173"
+external_input: "1175"
+external_input: "1177"
+external_input: "1179"
+external_input: "1181"
+external_input: "1183"
+external_input: "1185"
+external_input: "1187"
+external_input: "1189"
+external_input: "1191"
+external_input: "1193"
+external_input: "1195"
+external_input: "1197"
+external_input: "1199"
+external_input: "1201"
+external_input: "1203"
+external_input: "1205"
+external_input: "1207"
+external_input: "1209"
+external_input: "1211"
+external_input: "1213"
+external_input: "1215"
+external_input: "1217"
+external_input: "1219"
+external_input: "1221"
+external_input: "1223"
+external_input: "1225"
+external_input: "1227"
+external_input: "1229"
+external_input: "1231"
+external_input: "1233"
+external_input: "1235"
+external_input: "1237"
+external_input: "1239"
+external_input: "1241"
+external_input: "1243"
+external_input: "1245"
+external_input: "1247"
+external_input: "1249"
+external_input: "1251"
+external_input: "1253"
+external_input: "1255"
+external_input: "1257"
+external_input: "1259"
+external_input: "1261"
+external_input: "1263"
+external_input: "1265"
+external_input: "1267"
+external_input: "1269"
+external_input: "1271"
+external_input: "1273"
+external_input: "1275"
+external_input: "1277"
+external_input: "1279"
+external_input: "1281"
+external_input: "1283"
+external_input: "1285"
+external_input: "1287"
+external_input: "1289"
+external_input: "1291"
+external_input: "1293"
+external_input: "1295"
+external_input: "1297"
+external_input: "1299"
+external_input: "1301"
+external_input: "1303"
+external_input: "1305"
+external_input: "1307"
+external_input: "1309"
+external_input: "1311"
+external_input: "1313"
+external_input: "1315"
+external_input: "1317"
+external_input: "1319"
+external_input: "1321"
+external_input: "1323"
+external_input: "1325"
+external_input: "1327"
+external_input: "1329"
+external_input: "1331"
+external_input: "1333"
+external_input: "1335"
+external_input: "1337"
+external_input: "1339"
+external_input: "1341"
+external_input: "1343"
+external_input: "1345"
+external_input: "1347"
+external_input: "1349"
+external_input: "1351"
+external_input: "1353"
+external_input: "1355"
+external_input: "1357"
+external_input: "1359"
+external_input: "1361"
+external_input: "1363"
+external_input: "1365"
+external_input: "1367"
+external_input: "1369"
+external_input: "1371"
+external_input: "1373"
+external_input: "1375"
+external_input: "1377"
+external_input: "1379"
+external_input: "1381"
+external_input: "1383"
+external_input: "1385"
+external_input: "1387"
+external_input: "1389"
+external_input: "1391"
+external_input: "1393"
+external_input: "1395"
+external_input: "1397"
+external_input: "1399"
+external_input: "1401"
+external_input: "1403"
+external_input: "1405"
+external_input: "1407"
+external_input: "1409"
+external_input: "1411"
+external_input: "1413"
+external_input: "1415"
+external_input: "1417"
+external_input: "1419"
+external_input: "1421"
+external_input: "1423"
+external_input: "1425"
+external_input: "1427"
+external_input: "1429"
+external_input: "1431"
+external_input: "1433"
+external_input: "1435"
+external_output: "bbox_nms"
+external_output: "score_nms"
+external_output: "class_nms"
+external_output: "mask_fcn_probs"
