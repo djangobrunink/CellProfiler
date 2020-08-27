@@ -1,0 +1,5470 @@
+name: "torch-jit-export_predict"
+op {
+  input: "data"
+  output: "318"
+  name: ""
+  type: "Cast"
+  arg {
+    name: "to"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "318"
+  input: "_wrapped_model.pixel_mean"
+  output: "319"
+  name: ""
+  type: "Sub"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "319"
+  input: "_wrapped_model.pixel_std"
+  output: "normalized_data"
+  name: ""
+  type: "Div"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "normalized_data"
+  input: "630"
+  input: "632"
+  output: "322"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 3
+    ints: 3
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "kernels"
+    ints: 7
+    ints: 7
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "322"
+  output: "324"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "324"
+  output: "325"
+  name: ""
+  type: "MaxPool"
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "325"
+  input: "634"
+  input: "636"
+  output: "326"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "326"
+  output: "328"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "328"
+  input: "638"
+  input: "640"
+  output: "329"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "329"
+  output: "331"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "331"
+  input: "642"
+  input: "644"
+  output: "332"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "325"
+  input: "646"
+  input: "648"
+  output: "334"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "332"
+  input: "334"
+  output: "336"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "336"
+  output: "337"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "337"
+  input: "650"
+  input: "652"
+  output: "338"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "338"
+  output: "340"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "340"
+  input: "654"
+  input: "656"
+  output: "341"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "341"
+  output: "343"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "343"
+  input: "658"
+  input: "660"
+  output: "344"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "344"
+  input: "337"
+  output: "346"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "346"
+  output: "347"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "347"
+  input: "662"
+  input: "664"
+  output: "348"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "348"
+  output: "350"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "350"
+  input: "666"
+  input: "668"
+  output: "351"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "351"
+  output: "353"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "353"
+  input: "670"
+  input: "672"
+  output: "354"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "354"
+  input: "347"
+  output: "356"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "356"
+  output: "357"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "357"
+  input: "674"
+  input: "676"
+  output: "358"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "358"
+  output: "360"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "360"
+  input: "678"
+  input: "680"
+  output: "361"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "361"
+  output: "363"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "363"
+  input: "682"
+  input: "684"
+  output: "364"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "357"
+  input: "686"
+  input: "688"
+  output: "366"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "364"
+  input: "366"
+  output: "368"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "368"
+  output: "369"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "369"
+  input: "690"
+  input: "692"
+  output: "370"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "370"
+  output: "372"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "372"
+  input: "694"
+  input: "696"
+  output: "373"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "373"
+  output: "375"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "375"
+  input: "698"
+  input: "700"
+  output: "376"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "376"
+  input: "369"
+  output: "378"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "378"
+  output: "379"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "379"
+  input: "702"
+  input: "704"
+  output: "380"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "380"
+  output: "382"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "382"
+  input: "706"
+  input: "708"
+  output: "383"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "383"
+  output: "385"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "385"
+  input: "710"
+  input: "712"
+  output: "386"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "386"
+  input: "379"
+  output: "388"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "388"
+  output: "389"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "389"
+  input: "714"
+  input: "716"
+  output: "390"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "390"
+  output: "392"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "392"
+  input: "718"
+  input: "720"
+  output: "393"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "393"
+  output: "395"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "395"
+  input: "722"
+  input: "724"
+  output: "396"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "396"
+  input: "389"
+  output: "398"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "398"
+  output: "399"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "399"
+  input: "726"
+  input: "728"
+  output: "400"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "400"
+  output: "402"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "402"
+  input: "730"
+  input: "732"
+  output: "403"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "403"
+  output: "405"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "405"
+  input: "734"
+  input: "736"
+  output: "406"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "399"
+  input: "738"
+  input: "740"
+  output: "408"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "406"
+  input: "408"
+  output: "410"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "410"
+  output: "411"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "411"
+  input: "742"
+  input: "744"
+  output: "412"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "412"
+  output: "414"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "414"
+  input: "746"
+  input: "748"
+  output: "415"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "415"
+  output: "417"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "417"
+  input: "750"
+  input: "752"
+  output: "418"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "418"
+  input: "411"
+  output: "420"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "420"
+  output: "421"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "421"
+  input: "754"
+  input: "756"
+  output: "422"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "422"
+  output: "424"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "424"
+  input: "758"
+  input: "760"
+  output: "425"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "425"
+  output: "427"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "427"
+  input: "762"
+  input: "764"
+  output: "428"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "428"
+  input: "421"
+  output: "430"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "430"
+  output: "431"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "431"
+  input: "766"
+  input: "768"
+  output: "432"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "432"
+  output: "434"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "434"
+  input: "770"
+  input: "772"
+  output: "435"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "435"
+  output: "437"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "437"
+  input: "774"
+  input: "776"
+  output: "438"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "438"
+  input: "431"
+  output: "440"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "440"
+  output: "441"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "441"
+  input: "778"
+  input: "780"
+  output: "442"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "442"
+  output: "444"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "444"
+  input: "782"
+  input: "784"
+  output: "445"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "445"
+  output: "447"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "447"
+  input: "786"
+  input: "788"
+  output: "448"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "448"
+  input: "441"
+  output: "450"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "450"
+  output: "451"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "451"
+  input: "790"
+  input: "792"
+  output: "452"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "452"
+  output: "454"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "454"
+  input: "794"
+  input: "796"
+  output: "455"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "455"
+  output: "457"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "457"
+  input: "798"
+  input: "800"
+  output: "458"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "458"
+  input: "451"
+  output: "460"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "460"
+  output: "461"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "461"
+  input: "802"
+  input: "804"
+  output: "462"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "462"
+  output: "464"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "464"
+  input: "806"
+  input: "808"
+  output: "465"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "465"
+  output: "467"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "467"
+  input: "810"
+  input: "812"
+  output: "468"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "461"
+  input: "814"
+  input: "816"
+  output: "470"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "468"
+  input: "470"
+  output: "472"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "472"
+  output: "473"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "473"
+  input: "818"
+  input: "820"
+  output: "474"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "474"
+  output: "476"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "476"
+  input: "822"
+  input: "824"
+  output: "477"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "477"
+  output: "479"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "479"
+  input: "826"
+  input: "828"
+  output: "480"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "480"
+  input: "473"
+  output: "482"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "482"
+  output: "483"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "483"
+  input: "830"
+  input: "832"
+  output: "484"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "484"
+  output: "486"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "486"
+  input: "834"
+  input: "836"
+  output: "487"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "487"
+  output: "489"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "489"
+  input: "838"
+  input: "840"
+  output: "490"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "490"
+  input: "483"
+  output: "492"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "492"
+  output: "493"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "493"
+  input: "_wrapped_model.backbone.fpn_lateral5.weight"
+  input: "_wrapped_model.backbone.fpn_lateral5.bias"
+  output: "494"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "494"
+  input: "_wrapped_model.backbone.fpn_output5.weight"
+  input: "_wrapped_model.backbone.fpn_output5.bias"
+  output: "495"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "494"
+  output: "496"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "461"
+  input: "_wrapped_model.backbone.fpn_lateral4.weight"
+  input: "_wrapped_model.backbone.fpn_lateral4.bias"
+  output: "497"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "497"
+  input: "496"
+  output: "498"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "498"
+  input: "_wrapped_model.backbone.fpn_output4.weight"
+  input: "_wrapped_model.backbone.fpn_output4.bias"
+  output: "499"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "498"
+  output: "500"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "399"
+  input: "_wrapped_model.backbone.fpn_lateral3.weight"
+  input: "_wrapped_model.backbone.fpn_lateral3.bias"
+  output: "501"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "501"
+  input: "500"
+  output: "502"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "502"
+  input: "_wrapped_model.backbone.fpn_output3.weight"
+  input: "_wrapped_model.backbone.fpn_output3.bias"
+  output: "503"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "502"
+  output: "504"
+  name: ""
+  type: "ResizeNearest"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "width_scale"
+    f: 2.0
+  }
+  arg {
+    name: "height_scale"
+    f: 2.0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "357"
+  input: "_wrapped_model.backbone.fpn_lateral2.weight"
+  input: "_wrapped_model.backbone.fpn_lateral2.bias"
+  output: "505"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "505"
+  input: "504"
+  output: "506"
+  name: ""
+  type: "Add"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "506"
+  input: "_wrapped_model.backbone.fpn_output2.weight"
+  input: "_wrapped_model.backbone.fpn_output2.bias"
+  output: "507"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "495"
+  output: "508"
+  name: ""
+  type: "MaxPool"
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "507"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "509"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "509"
+  output: "510"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "510"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "511"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "510"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "512"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "503"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "513"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "513"
+  output: "514"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "514"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "515"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "514"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "516"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "499"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "517"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "517"
+  output: "518"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "518"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "519"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "518"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "520"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "495"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "521"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "521"
+  output: "522"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "522"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "523"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "522"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "524"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "508"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+  output: "525"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "525"
+  output: "526"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "526"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+  output: "527"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "526"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+  input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+  output: "528"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "511"
+  input: "512"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.0"
+  output: "x.54"
+  output: "x.59"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "515"
+  input: "516"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.1"
+  output: "x.55"
+  output: "x.60"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "519"
+  input: "520"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.2"
+  output: "x.56"
+  output: "x.61"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "523"
+  input: "524"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.3"
+  output: "x.57"
+  output: "x.62"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "527"
+  input: "528"
+  input: "im_info"
+  input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.4"
+  output: "x.58"
+  output: "x.63"
+  name: ""
+  type: "GenerateProposals"
+  arg {
+    name: "spatial_scale"
+    f: 0.015625
+  }
+  arg {
+    name: "pre_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "post_nms_topN"
+    i: 1000
+  }
+  arg {
+    name: "nms_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "min_size"
+    f: 0.0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.54"
+  output: "539"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.55"
+  output: "540"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.56"
+  output: "541"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.57"
+  output: "542"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.58"
+  output: "543"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.59"
+  output: "544"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.60"
+  output: "545"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.61"
+  output: "546"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.62"
+  output: "547"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.63"
+  output: "548"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "539"
+  input: "540"
+  input: "541"
+  input: "542"
+  input: "543"
+  input: "544"
+  input: "545"
+  input: "546"
+  input: "547"
+  input: "548"
+  output: "rpn_rois.1"
+  name: ""
+  type: "CollectRpnProposals"
+  arg {
+    name: "rpn_max_level"
+    i: 6
+  }
+  arg {
+    name: "rpn_min_level"
+    i: 2
+  }
+  arg {
+    name: "rpn_post_nms_topN"
+    i: 1000
+  }
+}
+op {
+  input: "rpn_rois.1"
+  output: "rpn_rois"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "rpn_rois"
+  output: "551"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "551"
+  output: "x.64"
+  output: "x.65"
+  output: "x.66"
+  output: "x.67"
+  output: "x.68"
+  name: ""
+  type: "DistributeFpnProposals"
+  arg {
+    name: "roi_canonical_scale"
+    i: 224
+  }
+  arg {
+    name: "roi_canonical_level"
+    i: 4
+  }
+  arg {
+    name: "roi_max_level"
+    i: 5
+  }
+  arg {
+    name: "roi_min_level"
+    i: 2
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "x.64"
+  output: "557"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.65"
+  output: "558"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.66"
+  output: "559"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.67"
+  output: "560"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.68"
+  output: "561"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "507"
+  input: "557"
+  output: "562"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "503"
+  input: "558"
+  output: "563"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "499"
+  input: "559"
+  output: "564"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "495"
+  input: "560"
+  output: "roi_feat_fpn.1"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pooled_h"
+    i: 7
+  }
+  arg {
+    name: "pooled_w"
+    i: 7
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "562"
+  input: "563"
+  input: "564"
+  input: "roi_feat_fpn.1"
+  output: "566"
+  output: "OC2_DUMMY_0"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "566"
+  input: "561"
+  output: "567"
+  name: ""
+  type: "BatchPermutation"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "567"
+  output: "568"
+  name: ""
+  type: "Flatten"
+  arg {
+    name: "axis"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "568"
+  input: "_wrapped_model.roi_heads.box_head.fc1.weight"
+  input: "_wrapped_model.roi_heads.box_head.fc1.bias"
+  output: "569"
+  name: ""
+  type: "FC"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "569"
+  output: "570"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "570"
+  input: "_wrapped_model.roi_heads.box_head.fc2.weight"
+  input: "_wrapped_model.roi_heads.box_head.fc2.bias"
+  output: "571"
+  name: ""
+  type: "FC"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "571"
+  output: "572"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "572"
+  input: "_wrapped_model.roi_heads.box_predictor.cls_score.weight"
+  input: "_wrapped_model.roi_heads.box_predictor.cls_score.bias"
+  output: "573"
+  name: ""
+  type: "FC"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "572"
+  input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.weight"
+  input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.bias"
+  output: "574"
+  name: ""
+  type: "FC"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "573"
+  output: "575"
+  name: ""
+  type: "Softmax"
+  arg {
+    name: "axis"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "rpn_rois"
+  output: "576"
+  output: "OC2_DUMMY_1"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "576"
+  output: "577"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "574"
+  output: "578"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "im_info"
+  output: "579"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "577"
+  input: "578"
+  input: "579"
+  output: "roi_pred_bbox.1"
+  output: "roi_batch_splits.1"
+  name: ""
+  type: "BBoxTransform"
+  arg {
+    name: "weights"
+    floats: 10.0
+    floats: 10.0
+    floats: 5.0
+    floats: 5.0
+  }
+  arg {
+    name: "apply_scale"
+    i: 1
+  }
+  arg {
+    name: "rotated"
+    i: 0
+  }
+  arg {
+    name: "angle_bound_on"
+    i: 1
+  }
+  arg {
+    name: "angle_bound_lo"
+    i: -180
+  }
+  arg {
+    name: "angle_bound_hi"
+    i: 180
+  }
+  arg {
+    name: "clip_angle_thresh"
+    f: 1.0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "575"
+  output: "584"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "584"
+  input: "roi_pred_bbox.1"
+  input: "roi_batch_splits.1"
+  output: "587"
+  output: "588"
+  output: "589"
+  output: "590"
+  output: "591"
+  output: "592"
+  name: ""
+  type: "BoxWithNMSLimit"
+  arg {
+    name: "score_thresh"
+    f: 0.699999988079071
+  }
+  arg {
+    name: "nms"
+    f: 0.5
+  }
+  arg {
+    name: "detections_per_im"
+    i: 100
+  }
+  arg {
+    name: "soft_nms_enabled"
+    i: 0
+  }
+  arg {
+    name: "soft_nms_method"
+    s: "linear"
+  }
+  arg {
+    name: "soft_nms_sigma"
+    f: 0.5
+  }
+  arg {
+    name: "soft_nms_min_score_thres"
+    f: 0.0010000000474974513
+  }
+  arg {
+    name: "rotated"
+    i: 0
+  }
+  arg {
+    name: "cls_agnostic_bbox_reg"
+    i: 1
+  }
+  arg {
+    name: "input_boxes_include_bg_cls"
+    i: 0
+  }
+  arg {
+    name: "output_classes_include_bg_cls"
+    i: 0
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "587"
+  output: "score_nms"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "588"
+  output: "bbox_nms"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "589"
+  output: "class_nms"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "bbox_nms"
+  output: "599"
+  name: ""
+  type: "CopyGPUToCPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "599"
+  output: "x.69"
+  output: "x.70"
+  output: "x.71"
+  output: "x.72"
+  output: "x.73"
+  name: ""
+  type: "DistributeFpnProposals"
+  arg {
+    name: "roi_canonical_scale"
+    i: 224
+  }
+  arg {
+    name: "roi_canonical_level"
+    i: 4
+  }
+  arg {
+    name: "roi_max_level"
+    i: 5
+  }
+  arg {
+    name: "roi_min_level"
+    i: 2
+  }
+  arg {
+    name: "legacy_plus_one"
+    i: 0
+  }
+}
+op {
+  input: "x.69"
+  output: "605"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.70"
+  output: "606"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.71"
+  output: "607"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.72"
+  output: "608"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "x.73"
+  output: "609"
+  name: ""
+  type: "CopyCPUToGPU"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "507"
+  input: "605"
+  output: "610"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.25
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "503"
+  input: "606"
+  output: "611"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.125
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "499"
+  input: "607"
+  output: "612"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.0625
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "495"
+  input: "608"
+  output: "roi_feat_fpn"
+  name: ""
+  type: "RoIAlign"
+  arg {
+    name: "order"
+    s: "NCHW"
+  }
+  arg {
+    name: "spatial_scale"
+    f: 0.03125
+  }
+  arg {
+    name: "pooled_h"
+    i: 14
+  }
+  arg {
+    name: "pooled_w"
+    i: 14
+  }
+  arg {
+    name: "sampling_ratio"
+    i: 0
+  }
+  arg {
+    name: "aligned"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "610"
+  input: "611"
+  input: "612"
+  input: "roi_feat_fpn"
+  output: "614"
+  output: "OC2_DUMMY_2"
+  name: ""
+  type: "Concat"
+  arg {
+    name: "axis"
+    i: 0
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "614"
+  input: "609"
+  output: "input.68"
+  name: ""
+  type: "BatchPermutation"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "input.68"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.bias"
+  output: "616"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "616"
+  output: "617"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "617"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.bias"
+  output: "618"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "618"
+  output: "619"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "619"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.bias"
+  output: "620"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "620"
+  output: "621"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "621"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.weight"
+  input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.bias"
+  output: "622"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 1
+    ints: 1
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 3
+    ints: 3
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "622"
+  output: "623"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "623"
+  input: "_wrapped_model.roi_heads.mask_head.deconv.weight"
+  input: "_wrapped_model.roi_heads.mask_head.deconv.bias"
+  output: "624"
+  name: ""
+  type: "ConvTranspose"
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  arg {
+    name: "kernels"
+    ints: 2
+    ints: 2
+  }
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "strides"
+    ints: 2
+    ints: 2
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "624"
+  output: "625"
+  name: ""
+  type: "Relu"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "625"
+  input: "_wrapped_model.roi_heads.mask_head.predictor.weight"
+  input: "_wrapped_model.roi_heads.mask_head.predictor.bias"
+  output: "626"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "pads"
+    ints: 0
+    ints: 0
+    ints: 0
+    ints: 0
+  }
+  arg {
+    name: "kernels"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "dilations"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "strides"
+    ints: 1
+    ints: 1
+  }
+  arg {
+    name: "group"
+    i: 1
+  }
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+op {
+  input: "626"
+  output: "mask_fcn_probs"
+  name: ""
+  type: "Sigmoid"
+  device_option {
+    device_type: 1
+    device_id: 0
+  }
+}
+device_option {
+  device_type: 0
+  device_id: 0
+}
+arg {
+  name: "size_divisibility"
+  i: 32
+}
+arg {
+  name: "device"
+  s: "cuda:0"
+}
+arg {
+  name: "meta_architecture"
+  s: "GeneralizedRCNN"
+}
+external_input: "data"
+external_input: "im_info"
+external_input: "_wrapped_model.pixel_mean"
+external_input: "_wrapped_model.pixel_std"
+external_input: "_wrapped_model.backbone.fpn_lateral2.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral2.bias"
+external_input: "_wrapped_model.backbone.fpn_output2.weight"
+external_input: "_wrapped_model.backbone.fpn_output2.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral3.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral3.bias"
+external_input: "_wrapped_model.backbone.fpn_output3.weight"
+external_input: "_wrapped_model.backbone.fpn_output3.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral4.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral4.bias"
+external_input: "_wrapped_model.backbone.fpn_output4.weight"
+external_input: "_wrapped_model.backbone.fpn_output4.bias"
+external_input: "_wrapped_model.backbone.fpn_lateral5.weight"
+external_input: "_wrapped_model.backbone.fpn_lateral5.bias"
+external_input: "_wrapped_model.backbone.fpn_output5.weight"
+external_input: "_wrapped_model.backbone.fpn_output5.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.conv.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.conv.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.objectness_logits.bias"
+external_input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.weight"
+external_input: "_wrapped_model.proposal_generator.rpn_head.anchor_deltas.bias"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.0"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.1"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.2"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.3"
+external_input: "_wrapped_model.proposal_generator.anchor_generator.cell_anchors.4"
+external_input: "_wrapped_model.roi_heads.box_head.fc1.weight"
+external_input: "_wrapped_model.roi_heads.box_head.fc1.bias"
+external_input: "_wrapped_model.roi_heads.box_head.fc2.weight"
+external_input: "_wrapped_model.roi_heads.box_head.fc2.bias"
+external_input: "_wrapped_model.roi_heads.box_predictor.cls_score.weight"
+external_input: "_wrapped_model.roi_heads.box_predictor.cls_score.bias"
+external_input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.weight"
+external_input: "_wrapped_model.roi_heads.box_predictor.bbox_pred.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn1.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn2.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn3.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.mask_fcn4.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.deconv.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.deconv.bias"
+external_input: "_wrapped_model.roi_heads.mask_head.predictor.weight"
+external_input: "_wrapped_model.roi_heads.mask_head.predictor.bias"
+external_input: "630"
+external_input: "632"
+external_input: "634"
+external_input: "636"
+external_input: "638"
+external_input: "640"
+external_input: "642"
+external_input: "644"
+external_input: "646"
+external_input: "648"
+external_input: "650"
+external_input: "652"
+external_input: "654"
+external_input: "656"
+external_input: "658"
+external_input: "660"
+external_input: "662"
+external_input: "664"
+external_input: "666"
+external_input: "668"
+external_input: "670"
+external_input: "672"
+external_input: "674"
+external_input: "676"
+external_input: "678"
+external_input: "680"
+external_input: "682"
+external_input: "684"
+external_input: "686"
+external_input: "688"
+external_input: "690"
+external_input: "692"
+external_input: "694"
+external_input: "696"
+external_input: "698"
+external_input: "700"
+external_input: "702"
+external_input: "704"
+external_input: "706"
+external_input: "708"
+external_input: "710"
+external_input: "712"
+external_input: "714"
+external_input: "716"
+external_input: "718"
+external_input: "720"
+external_input: "722"
+external_input: "724"
+external_input: "726"
+external_input: "728"
+external_input: "730"
+external_input: "732"
+external_input: "734"
+external_input: "736"
+external_input: "738"
+external_input: "740"
+external_input: "742"
+external_input: "744"
+external_input: "746"
+external_input: "748"
+external_input: "750"
+external_input: "752"
+external_input: "754"
+external_input: "756"
+external_input: "758"
+external_input: "760"
+external_input: "762"
+external_input: "764"
+external_input: "766"
+external_input: "768"
+external_input: "770"
+external_input: "772"
+external_input: "774"
+external_input: "776"
+external_input: "778"
+external_input: "780"
+external_input: "782"
+external_input: "784"
+external_input: "786"
+external_input: "788"
+external_input: "790"
+external_input: "792"
+external_input: "794"
+external_input: "796"
+external_input: "798"
+external_input: "800"
+external_input: "802"
+external_input: "804"
+external_input: "806"
+external_input: "808"
+external_input: "810"
+external_input: "812"
+external_input: "814"
+external_input: "816"
+external_input: "818"
+external_input: "820"
+external_input: "822"
+external_input: "824"
+external_input: "826"
+external_input: "828"
+external_input: "830"
+external_input: "832"
+external_input: "834"
+external_input: "836"
+external_input: "838"
+external_input: "840"
+external_output: "bbox_nms"
+external_output: "score_nms"
+external_output: "class_nms"
+external_output: "mask_fcn_probs"

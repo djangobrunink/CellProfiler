@@ -1,0 +1,13 @@
+{
+  "class_mappings": {
+    "0": "Healthy",
+    "1": "Deformed",
+    "2": "Death"
+  },
+  "aug": {
+    "resize_shortest_edge": {
+      "short_edge_length": [800, 800],
+      "max_size": 1333
+    }
+  }
+}

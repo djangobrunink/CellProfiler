@@ -1,0 +1,9 @@
+[08/11 12:45:58 d2.evaluation.coco_evaluation]: Evaluation results for segm:
+|   AP   |  AP50  |  AP75  |  APs  |  APm   |  APl   |
+|:------:|:------:|:------:|:-----:|:------:|:------:|
+| 28.910 | 73.141 | 12.028 |  nan  | 39.625 | 25.987 |
+[08/11 12:45:58 d2.evaluation.coco_evaluation]: Some metrics cannot be computed and is shown as NaN.
+[08/11 12:45:58 d2.evaluation.coco_evaluation]: Per-category segm AP:
+| category   | AP     | category   | AP     | category   | AP     |
+|:-----------|:-------|:-----------|:-------|:-----------|:-------|
+| Healthy    | 35.815 | Deformed   | 27.414 | Death      | 23.501 |
