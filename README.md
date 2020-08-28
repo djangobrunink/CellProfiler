@@ -15,10 +15,11 @@ Note:	Scroll down to JAVA SE 8u261. The JDK seems to require an Oracle account t
 
 4. 	Run the following commands:
 	- "pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html"
-	- "pip install cython future hypothesis numpy protobuf six mysqlclient"
+	- "pip install cython future hypothesis numpy protobuf six mysqlclient fvcore opencv-python"
 	- "pip install -e ."
 
 Note: 	If the last step errors out because of python-javabridge, there likely is an error with the JAVA_HOME variable.
-	
+	Ensure C:\Program Files\Java\jdk1.8.0_131 (or a different version) is set as JAVA_HOME system variable and that 
+	the Path system variable is JAVA_HOME/bin.
 
 5. 	Run CellProfiler by running 'cellprofiler' from the command line.
