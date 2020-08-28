@@ -1,3 +1,4 @@
+How to install
 1. 	Clone git repo CellProfiler to your local machine from https://github.com/djangobrunink/CellProfiler.
 	This is the full CellProfiler program with the zebrafish module in place. 
 
