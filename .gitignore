@@ -20,3 +20,6 @@ venv/
 *venv/
 .vscode/
 pip-wheel-metadata/
+weights/caffe2/large_fish.zip
+weights/caffe2/large_fish/model.pb
+weights/caffe2/large_fish/model_init.pb
