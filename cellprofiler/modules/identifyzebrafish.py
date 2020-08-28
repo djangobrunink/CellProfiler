@@ -1,19 +1,13 @@
 # coding=utf-8
 
-import logging
-
 import numpy
 from src.models.caffe.Caffe2Model import Caffe2Model
 from itertools import combinations
 import src.utils as utils
-import pickle
+
 import os.path
-from pathlib import Path
-import sys
-import pprint as pp
-from datetime import datetime
-import re
 import cv2
+from configparser import SafeConfigParser
 
 from cellprofiler_core.module import ImageProcessing
 from cellprofiler_core.image import Image
@@ -22,8 +16,7 @@ from cellprofiler_core.setting.choice import Choice
 from cellprofiler_core.setting.do_something import DoSomething, RemoveSettingButton
 from cellprofiler_core.setting.text import ImageName
 
-import matplotlib.pyplot as plt
-
+import pickle
 __doc__ = ""
 
 
@@ -32,7 +25,8 @@ X_NAME_TEXT = "Select the input image."
 Y_NAME_TEXT = "Name the zebrafish to be identified."
 MANAGE_INTER_OVERLAP_TEXT = "How to handle overlapping regions between different types of zebrafish?"
 MANAGE_INTRA_OVERLAP_TEXT = "How to handle overlapping regions between the same types of zebrafish?"
-MANAGE_REQUIRE_CONNECTION_TEXT = "Discard predicted masks that are not connected to the main instance?"
+MANAGE_REQUIRE_CONNECTION_TEXT = "Discard predicted sections that are not connected to the main instance?"
+MANAGE_YOLK_TEXT = "Discard yolk from the predicted mask?"
 INPUT_GROUP_COUNT_TEXT = "Input group count."
 GENERATE_IMAGE_FOR_TEXT = "For which type of zebrafish do you want to generate an image?"
 ADD_BUTTON_TEXT = "Add a new image"
@@ -43,6 +37,7 @@ Y_NAME_DOC = "Enter the name that you want to call the zebrafish identified by t
 MANAGE_INTRA_OVERLAP_DOC = ""
 MANAGE_INTER_OVERLAP_DOC = ""
 MANAGE_REQUIRE_CONNECTION_DOC = ""
+MANAGE_YOLK_DOC = ""
 
 # Settings choices
 INTER_OVERLAP_ALLOW = "Allow overlap between different types of zebrafish."
@@ -72,7 +67,7 @@ THRESHOLD = 0.6
 WEIGHT_FOLDER_PATH = r'weights/caffe2/large_fish'
 MODEL_FILE_PATH = r'model/model.txt'
 OUTPUT_FOLDER_PATH_TEST = r'outputs/output.txt'
-LABELS_FILE_PATH = r'labels/additional_labels.txt'
+LABELS_FILE_PATH = r'labels/additional_labels.cfg'
 
 # Error messages
 CONFIG_FILE_NOT_READ_TEXT = """\
@@ -84,30 +79,23 @@ Only ZebrafishHealthy will be available.""".format(
     }
 )
 
-TESTMODE = False
+TESTMODE = True
 
 NAME_HEALTHY = "ZebrafishHealthy"
 NAME_ALL = [
     NAME_HEALTHY,
 ]
 
-if not TESTMODE:
-    MODEL = Caffe2Model.load_protobuf(WEIGHT_FOLDER_PATH)
-
 class ConfigFileNotReadError(Exception): pass
 
 class SameClassError(Exception): pass
 
 def get_additional_labels(names, path):
-    if not os.path.exists(path):
-        raise ConfigFileNotReadError
-    with open(path, 'r') as config_file:
-            lines = config_file.readlines()
-            for line in lines:
-                if line.startswith('*') or line.isspace():
-                    continue
-                line = line.rstrip('\n') if line.endswith('\n') else line
-                names.append(line)
+    parser = SafeConfigParser()
+    parser.read(path)
+
+    for key, entry in parser.items('labels'):
+        names.append(entry)
     return names
 
 try:
@@ -131,54 +119,48 @@ class IdentifyZebrafish(ImageProcessing):
         return False
 
     def non_max_suppression(self, pred_boxes, overlapThresh):
+        """
+        Non-max suppression is used to ensure that bounding boxes that are predicted multiple times
+        are only displayed once.
+        """
         boxes = numpy.zeros(shape=(len(pred_boxes), 4))
         for i, box in enumerate(pred_boxes):
             boxes[i] = box.numpy()
 
-        # if there are no boxes, return an empty list
         if len(boxes) == 0:
             return []
-        # if the bounding boxes integers, convert them to floats --
-        # this is important since we'll be doing a bunch of divisions
-        # initialize the list of picked indexes	
+        
         pick = []
-        # grab the coordinates of the bounding boxes
+        
         x1 = boxes[:,0]
         y1 = boxes[:,1]
         x2 = boxes[:,2]
         y2 = boxes[:,3]
-        # compute the area of the bounding boxes and sort the bounding
-        # boxes by the bottom-right y-coordinate of the bounding box
+        
         area = (x2 - x1 + 1) * (y2 - y1 + 1)
         idxs = numpy.argsort(y2)
-        # keep looping while some indexes still remain in the indexes
-        # list
+        
         while len(idxs) > 0:
-            # grab the last index in the indexes list and add the
-            # index value to the list of picked indexes
+            
             last = len(idxs) - 1
             i = idxs[last]
             pick.append(i)
-            # find the largest (x, y) coordinates for the start of
-            # the bounding box and the smallest (x, y) coordinates
-            # for the end of the bounding box
+            
             xx1 = numpy.maximum(x1[i], x1[idxs[:last]])
             yy1 = numpy.maximum(y1[i], y1[idxs[:last]])
             xx2 = numpy.minimum(x2[i], x2[idxs[:last]])
             yy2 = numpy.minimum(y2[i], y2[idxs[:last]])
-            # compute the width and height of the bounding box
+            
             w = numpy.maximum(0, xx2 - xx1 + 1)
             h = numpy.maximum(0, yy2 - yy1 + 1)
-            # compute the ratio of overlap
+            
             overlap = (w * h) / area[idxs[:last]]
-            # delete all indexes from the index list that have
+            
             idxs = numpy.delete(idxs, numpy.concatenate(([last],
                 numpy.where(overlap > overlapThresh)[0])))
-        # return only the bounding boxes that were picked using the
-        # integer data type
+        
         return pick
 
-    #TODO: Add setting for amount of overlap to discard.  
     def create_settings(self):
         super(IdentifyZebrafish, self).create_settings()
 
@@ -206,6 +188,12 @@ class IdentifyZebrafish(ImageProcessing):
             doc=MANAGE_REQUIRE_CONNECTION_DOC,
         )
 
+        self.discard_yolk = Binary(
+            MANAGE_YOLK_TEXT,
+            False,
+            doc=MANAGE_YOLK_DOC,
+        )
+
         self.separator = Divider(
             line=True
         )
@@ -223,12 +211,7 @@ class IdentifyZebrafish(ImageProcessing):
             self.add_image
         )   
 
-    #TODO: Clean comments
     def cleanup_mask(self, mask):
-        # unique_list = numpy.unique(mask)
-        # unique_list = unique_list[unique_list != 0]
-        # for value in unique_list:
-        # single_value_mask = numpy.where(mask == value, mask, 0)
         connection_map = cv2.connectedComponents(mask)[1]
         unique_values, sizes = numpy.unique(connection_map, return_counts=True)
         unique_values = unique_values[1:]
@@ -241,7 +224,7 @@ class IdentifyZebrafish(ImageProcessing):
                 new_mask = numpy.where(connection_map == index, 0, mask)
             return new_mask
         return mask
-    
+
     def add_image(self, can_remove=True, name='--Please choose from the list--'):
         group = SettingsGroup()
 
@@ -304,6 +287,7 @@ class IdentifyZebrafish(ImageProcessing):
             self.manage_inter_overlap,
             self.input_group_count,
             self.require_connection,
+            self.discard_yolk,
         ]
 
         for group in self.input_groups:
@@ -320,6 +304,7 @@ class IdentifyZebrafish(ImageProcessing):
             self.manage_intra_overlap,            
             self.manage_inter_overlap,
             self.require_connection,
+            self.discard_yolk,
         ]
 
         for total in self.input_groups:
@@ -372,11 +357,8 @@ class IdentifyZebrafish(ImageProcessing):
         return classes_to_predict, class_names
 
     def get_model(self):
-        print("Generating model from source ...")
+        print("Generating model ...")
         model = Caffe2Model.load_protobuf(WEIGHT_FOLDER_PATH)
-        os.makedirs(os.path.dirname(MODEL_FILE_PATH), exist_ok=True)
-        with open(MODEL_FILE_PATH, 'wb') as f:
-            pickle.dump(model, f)
         print("Generated model ...")
         return model
 
@@ -385,7 +367,6 @@ class IdentifyZebrafish(ImageProcessing):
         More post-processing can be added here. 'masks' is a list of length 
         len(NAME_ALL) containing a (HxW) mask of of every class that was selected
         by the user. If a class was not selected 'mask is None' evaluates to True.
-         
         """       
         masks = self.handle_inter_class_overlap(masks, classes_to_predict)
         return masks
@@ -398,8 +379,10 @@ class IdentifyZebrafish(ImageProcessing):
 
         if self.manage_intra_overlap == INTRA_OVERLAP_ASSIGN:
             new_mask = numpy.where(masks_overlap, old_mask, both_masks)
+
         elif self.manage_intra_overlap == INTRA_OVERLAP_EXCLUDE_REGION:
             new_mask = numpy.where(masks_overlap, 0, both_masks)
+
         elif self.manage_intra_overlap == INTRA_OVERLAP_EXCLUDE_INSTANCES:
             overlap_instances = (
                 list(
@@ -411,6 +394,7 @@ class IdentifyZebrafish(ImageProcessing):
                 old_mask[old_mask == instance] = -1
                 added_mask[added_mask == instance] = -1
             new_mask = old_mask + added_mask
+
         else:
             raise NotImplementedError(
                 "Choose a between-the-same-types overlap option from the provided list."
@@ -472,62 +456,40 @@ class IdentifyZebrafish(ImageProcessing):
         return new_masks
 
     def convert(self, orig_image):
-        with open("image_as_loaded_by_CP.npy", 'wb') as f:
-            numpy.save(f, orig_image)
-        print("orig_image--", "min:", orig_image.min(), "max:", orig_image.max(), "dtype:", orig_image.dtype, "shape", orig_image.shape)
-        input_ = cv2.normalize(orig_image, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
-        print("adapted--", "min:", input_.min(), "max:", input_.max(), "dtype:", input_.dtype)
+        """
+        The module expects the input image to be an RGB image. This is converted to BGR before
+        providing it to the DL model. Any future transformations that need to be done before 
+        passing an image through the DL model can be added here.
+        """
+        r, g, b = cv2.split(orig_image)
+        bgr_image = cv2.merge((b, g, r))
+        return bgr_image
 
-        
-        with open("image_bgr.npy", 'rb') as f:
-            jordi = numpy.load(f)
-        plt.figure(1)
-        plt.imshow(numpy.abs(input_))
-        plt.show()
-        plt.figure(2)
-        plt.imshow(numpy.abs(jordi))
-        plt.show()
-        plt.figure(3)
-        plt.imshow(numpy.abs(input_ - jordi))
-        plt.show()
-
-        # numpy.array(
-        #     (orig_image * 255), dtype=numpy.uint8)
-        assert input_.ndim in (
-            2, 3), "Image should be grayscale (H x W) or BGR (H x W x 3)."
-        if input_.ndim == 2:
-            bgr = numpy.stack((input_,)*3, axis=2)
-        else: 
-            r,g,b = cv2.split(input_)
-            bgr = cv2.merge((b, g, r))
-            print("bgr--", "min:", bgr.min(), "max:", bgr.max(), "dtype:", bgr.dtype)
-        
-        #with open("image_bgr.npy", 'rb') as f:
-        #    bgr = numpy.load(f)
-        return orig_image * 255
-
-    #TODO: Find good way to store model
     def generate_output(self, input_):
+        """
+        Passing the images through the DL model.
+        """
         if TESTMODE:
-            if not os.path.isfile(OUTPUT_FOLDER_PATH_TEST):
+            if os.path.exists(OUTPUT_FOLDER_PATH_TEST):
+                with open(OUTPUT_FOLDER_PATH_TEST, 'rb') as f:
+                    output = pickle.load(f)
+            else:
                 model = self.get_model()
                 output = model(input_)
                 with open(OUTPUT_FOLDER_PATH_TEST, 'wb') as f:
                     pickle.dump(output, f)
-            with open(OUTPUT_FOLDER_PATH_TEST, 'rb') as f:
-                # model = self.get_model()
-                output = pickle.load(f)
         else:
-            model = MODEL
+            print("Analysing images ...")
+            model = self.get_model()
             output = model(input_)
-        date = str(datetime.now())
-        date = re.sub(r"\D", "", date)
-        filename = 'outputs/output_%s.txt' % (date)
-        with open(filename, 'wb') as f:
-            pickle.dump(output, f)
+            print("Analysis done ...")
         return output
 
     def get_empty_masks(self, classes_to_predict, parent_image_pixels_shape):
+        """
+        Initialize masks. If a class is not selected by the user, None is appended, otherwise a numpy array 
+        with the size of the image is filled with zeros. 
+        """
         masks = []
         for potential_class in range(MAX_MASK_COUNT):
             if potential_class in classes_to_predict:
@@ -543,22 +505,8 @@ class IdentifyZebrafish(ImageProcessing):
         parent_image = workspace.image_set.get_image(image_name)
         parent_image_pixels = parent_image.pixel_data
 
-        # Convert image to (3xHxW)
         input_ = self.convert(parent_image_pixels)
         
-        plt.imshow(input_)
-        plt.savefig("test.png")
-        
-        # with open("test.txt", 'a+b') as f:
-        #     numpy.savetxt(f[0], input_)
-
-        # with open("test1.txt", 'wb') as f:
-        #     numpy.savetxt(f[1], input_)
-        # with open("test2.txt", 'wb') as f:
-        #     numpy.savetxt(f[2], input_)
-
-
-        # Pass image through DL model
         output = self.generate_output(input_)
         
         # Run NMS to select best boxes
@@ -590,7 +538,7 @@ class IdentifyZebrafish(ImageProcessing):
                 mask = mask.astype("float16")
                 mask *= (1/(255 * 2))
                 mask += 0.5
-            self.create_output(
+            self.provide_to_workspace(
                 workspace=workspace,
                 parent_image=parent_image,
                 mask=mask,
@@ -606,7 +554,10 @@ class IdentifyZebrafish(ImageProcessing):
                 workspace.display_data.images.append(mask)
                 workspace.display_data.image_names.append(name)
 
-    def create_output(self, workspace, parent_image, mask, mask_name):
+    def provide_to_workspace(self, workspace, parent_image, mask, mask_name):
+        """
+        Provides the images generated by the module to the workspace of CP.
+        """
         output_mask = Image(
             image=mask,
             parent_image=parent_image,
@@ -623,10 +574,6 @@ class IdentifyZebrafish(ImageProcessing):
             instances.extend(numpy.unique(mask))
         instances[:] = [entry for entry in instances if entry > 0]
         return len(instances)
-
-    def get_dictionary(self, ignore=None):
-        print("shared_state", self.shared_state)
-        return self.shared_state
 
     def display(self, workspace, figure):
         if self.show_window:
@@ -648,15 +595,21 @@ class IdentifyZebrafish(ImageProcessing):
     def populate_masks(self, masks, output, classes_to_predict, best_box_indices):
         """
         Checks if the results of the DL model have class predictions that are selected and assign predictions to masks accordingly.
-        Ocurrances of overlap are labeled with -1 and are set back to 0 when all instance_masks are added.
+        Ocurrances of overlap are labeled with -1 and are set back to 0 after all instance_masks are added.
         """ 
+        yolk_mask = numpy.zeros(masks[0].shape)
         for i, (instance_mask, label) in enumerate(zip(output.pred_masks, output.pred_classes)):
             if i not in best_box_indices:
                 continue
             instance_mask = numpy.array(instance_mask, dtype=numpy.uint8)
+            
             if self.require_connection:
                 instance_mask = self.cleanup_mask(instance_mask)
-            if label in classes_to_predict:
+            
+            if label == 99:
+                yolk_mask = numpy.where(instance_mask, 1, yolk_mask)
+
+            elif label in classes_to_predict:    
                 old_mask = masks[label]
                 added_mask = instance_mask * (i + 1)
                 new_mask = self.handle_intra_class_overlap(old_mask, added_mask)
@@ -668,31 +621,37 @@ class IdentifyZebrafish(ImageProcessing):
                 continue
             mask[mask < 0] = 0
             masks[i] = mask
+
+            if self.discard_yolk:
+                mask[yolk_mask == 1] = 0
+
+        
+
         return masks
 
-    def get_measurement_columns(self, pipeline):
-        columns = []
-        columns += super(IdentifyZebrafish, self).get_measurement_columns(
-            pipeline
-        )
+    # def get_measurement_columns(self, pipeline):
+    #     columns = []
+    #     columns += super(IdentifyZebrafish, self).get_measurement_columns(
+    #         pipeline
+    #     )
 
-        return columns
+    #     return columns
 
-    def get_categories(self, pipeline, object_name):
-        categories = []
-        categories += super(IdentifyZebrafish, self).get_categories(
-            pipeline, object_name
-        )
+    # def get_categories(self, pipeline, object_name):
+    #     categories = []
+    #     categories += super(IdentifyZebrafish, self).get_categories(
+    #         pipeline, object_name
+    #     )
 
-        return categories
+    #     return categories
 
-    def get_measurements(self, pipeline, object_name, category):
-        measurements = []
-        measurements += super(IdentifyZebrafish, self).get_measurements(
-            pipeline, object_name, category
-        )
+    # def get_measurements(self, pipeline, object_name, category):
+    #     measurements = []
+    #     measurements += super(IdentifyZebrafish, self).get_measurements(
+    #         pipeline, object_name, category
+    #     )
 
-        return measurements
+    #     return measurements
 
-    def get_measurement_objects(self, pipeline, object_name, category, measurement):
-        return []
+    # def get_measurement_objects(self, pipeline, object_name, category, measurement):
+    #     return []

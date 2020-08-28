@@ -1,0 +1,19 @@
+[08/26 18:43:54 d2.evaluation.coco_evaluation]: Evaluation results for bbox:
+|   AP   |  AP50  |  AP75  |  APs   |  APm   |  APl   |
+|:------:|:------:|:------:|:------:|:------:|:------:|
+| 54.267 | 79.520 | 57.048 | 42.888 | 61.589 | 61.563 |
+[08/26 18:43:54 d2.evaluation.coco_evaluation]: Per-category bbox AP:
+| category   | AP     | category   | AP     | category   | AP     |
+|:-----------|:-------|:-----------|:-------|:-----------|:-------|
+| Healthy    | 79.708 | Deformed   | 52.191 | Death      | 29.686 |
+| Yolk       | 55.482 |            |        |            |        |p3
+
+[08/26 18:43:54 d2.evaluation.coco_evaluation]: Evaluation results for segm:
+|   AP   |  AP50  |  AP75  |  APs   |  APm   |  APl   |
+|:------:|:------:|:------:|:------:|:------:|:------:|
+| 46.527 | 78.426 | 51.876 | 44.031 | 46.242 | 53.801 |
+[08/26 18:43:54 d2.evaluation.coco_evaluation]: Per-category segm AP:
+| category   | AP     | category   | AP     | category   | AP     |
+|:-----------|:-------|:-----------|:-------|:-----------|:-------|
+| Healthy    | 64.102 | Deformed   | 43.529 | Death      | 20.658 |
+| Yolk       | 57.818 |            |        |            |        |

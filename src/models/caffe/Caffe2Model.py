@@ -60,7 +60,6 @@ class Caffe2Model(nn.Module):
         Returns:
             Caffe2Model: the caffe2 model loaded from this directory.
         """
-
         predict_net = caffe2_pb2.NetDef()
         with open(os.path.join(dir, "model.pb"), "rb") as f:
             predict_net.ParseFromString(f.read())
@@ -86,10 +85,11 @@ class Caffe2Model(nn.Module):
         Returns:
             Instances: Containing the predicted values.
         """
-        assert image.dtype == np.uint8, f"Expected image with dtype uint8 but got {image.dtype}"
+        assert np.min(image) >= 0.0 and np.max(image) <= 1.0, f"Value must be in range [0, 1] but are in [{np.min(image)}, {np.max(image)}]."
         assert len(image.shape) == 3 and image.shape[2] == 3, \
-            f"Expected image to have shape (H,W, 3) but has shape {image.shape}"
+            f"Expected image to have shape (H, W, 3) but has shape {image.shape}"
 
+        image *= 255
         height, width, _ = image.shape
 
         resized_image = self.aug.get_transform(image).apply_image(image)
