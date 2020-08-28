@@ -3,7 +3,7 @@
     "0": "Healthy",
     "1": "Deformed",
     "2": "Death",
-    "99": "Yolk"
+    "3": "Yolk"
   },
   "aug": {
     "resize_shortest_edge": {

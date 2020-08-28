@@ -21,3 +21,4 @@ venv/
 .vscode/
 pip-wheel-metadata/
 *.pb
+weights/caffe2/large_fish.zip
