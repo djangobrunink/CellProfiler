@@ -273,16 +273,19 @@ class IdentifyZebrafish(ImageProcessing):
     def get_classes_to_predict(self, workspace):
         classes_to_predict = []
         class_names = []
+        class_names_user = []
         for i, group in enumerate(self.input_groups):
             name = group.generate_image_for.value
+            name_user = group.output_image_name.value
             if name not in class_names:
                 classes_to_predict.append(i)
                 class_names.append(name)
+                class_names_user.append(name_user)
             else:
                 raise SameClassError(
                     "Selected the same class twice. Please make sure classes are only selected once.")
 
-        return classes_to_predict, class_names
+        return classes_to_predict, class_names, class_names_user
 
     def get_empty_masks(self, classes_to_predict, parent_image_pixels_shape):
         """
@@ -311,7 +314,6 @@ class IdentifyZebrafish(ImageProcessing):
             if os.path.exists(OUTPUT_FOLDER_PATH_TEST):
                 with open(OUTPUT_FOLDER_PATH_TEST, 'rb') as f:
                     output = pickle.load(f)
-                    print(output)
             else:
                 model = self.get_model()
                 output = model(input_)
@@ -550,9 +552,9 @@ class IdentifyZebrafish(ImageProcessing):
         else:
             best_box_indices = range(len(output.pred_boxes))
 
-        classes_to_predict, class_names = self.get_classes_to_predict(
+        classes_to_predict, class_names, class_names_user = self.get_classes_to_predict(
             workspace)
-        
+
         masks = self.get_empty_masks(classes_to_predict, (parent_image_pixels.shape[0], parent_image_pixels.shape[1]))
         
         masks = self.populate_masks(masks, output, classes_to_predict, best_box_indices)
@@ -562,7 +564,7 @@ class IdentifyZebrafish(ImageProcessing):
         instance_count = self.calc_number_of_accepted_instances(masks)
         statistics.append(["# of accepted objects", "%d" % instance_count])
 
-        for i, (mask, name) in enumerate(zip(masks, class_names)):
+        for i, (mask, name) in enumerate(zip(masks, class_names_user)):
             if i not in classes_to_predict or mask is None:
                 continue
             if mask.max() != 0:

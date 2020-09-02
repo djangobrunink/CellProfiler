@@ -20,6 +20,8 @@ Note:	Scroll down to JAVA SE 8u261. The JDK seems to require an Oracle account t
 
 Note: 	If the last step errors out because of python-javabridge, there likely is an error with the JAVA_HOME variable.
 	Ensure C:\Program Files\Java\jdk1.8.0_131 (or a different version) is set as JAVA_HOME system variable and that 
-	the Path system variable is JAVA_HOME/bin.
+	the Path system variable is JAVA_HOME\bin.
 
-5. 	Run CellProfiler by running 'cellprofiler' from the command line.
+5.	Copy the folder called 'large_fish' sent via SurfFileSender into weights/caffe2 and merge with the existing files. 
+
+6. 	Run CellProfiler by running 'cellprofiler' from the command line. The zebrafish module should be available in Image Processing.
