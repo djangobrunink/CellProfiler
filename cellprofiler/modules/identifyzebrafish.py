@@ -4,6 +4,7 @@ import numpy
 from src.models.caffe.Caffe2Model import Caffe2Model
 from itertools import combinations
 import src.utils as utils
+import logging
 
 import os.path
 import cv2
@@ -14,20 +15,21 @@ from cellprofiler_core.image import Image
 from cellprofiler_core.setting import Binary, Divider, HiddenCount, SettingsGroup
 from cellprofiler_core.setting.choice import Choice
 from cellprofiler_core.setting.do_something import DoSomething, RemoveSettingButton
-from cellprofiler_core.setting.text import ImageName
+from cellprofiler_core.setting.text import ImageName, Float
 
 import pickle
-import matplotlib.pyplot as plt
 __doc__ = ""
 
 
 # Settings text which is referenced in various places in the help
 X_NAME_TEXT = "Select the input image."
 Y_NAME_TEXT = "Name the zebrafish to be identified."
+MANAGE_NMS_OVERLAP_TEXT = "Handle overlap automatically?"
 MANAGE_INTER_OVERLAP_TEXT = "How to handle overlapping regions between different types of zebrafish?"
 MANAGE_INTRA_OVERLAP_TEXT = "How to handle overlapping regions between the same types of zebrafish?"
 MANAGE_REQUIRE_CONNECTION_TEXT = "Discard predicted sections that are not connected to the main instance?"
 MANAGE_YOLK_TEXT = "Discard yolk from the predicted mask?"
+MANAGE_THRESHOLD_TEXT = "Set the threshold value for automatic detection."
 INPUT_GROUP_COUNT_TEXT = "Input group count."
 GENERATE_IMAGE_FOR_TEXT = "For which type of zebrafish do you want to generate an image?"
 ADD_BUTTON_TEXT = "Add a new image"
@@ -39,6 +41,8 @@ MANAGE_INTRA_OVERLAP_DOC = ""
 MANAGE_INTER_OVERLAP_DOC = ""
 MANAGE_REQUIRE_CONNECTION_DOC = ""
 MANAGE_YOLK_DOC = ""
+MANAGE_THRESHOLD_DOC = ""
+MANAGE_NMS_OVERLAP_DOC = ""
 
 # Settings choices
 INTER_OVERLAP_ALLOW = "Allow overlap between different types of zebrafish."
@@ -61,25 +65,27 @@ INTRA_OVERLAP_ALL = [
     INTRA_OVERLAP_EXCLUDE_INSTANCES
 ]
 
-# Constants
-THRESHOLD = 0.6
-YOLK_CLASS = 3
+# Setting values
+HIDDEN_COUNT_SETTING = 6
 
 # Paths
 WEIGHT_FOLDER_PATH = r'weights/caffe2/large_fish'
 MODEL_FILE_PATH = r'model/model.txt'
 OUTPUT_FOLDER_PATH_TEST = r'outputs/output.txt'
-LABELS_FILE_PATH = r'labels/additional_labels.cfg'
+CONFIG_FILE_PATH = r'config/config.cfg'
 
 # Error messages
 CONFIG_FILE_NOT_READ_TEXT = """\
 Config file with additional labels was not read. Please make sure it exists 
-as *{LABELS_FILE_PATH}* in the CellProfiler installation directory.
+as *{CONFIG_FILE_PATH}* in the CellProfiler installation directory.
 Only ZebrafishHealthy will be available.""".format(
     **{
-        "LABELS_FILE_PATH": LABELS_FILE_PATH
+        "CONFIG_FILE_PATH": CONFIG_FILE_PATH
     }
 )
+SAME_CLASS_ERROR_TEXT = """
+    Selected the same class twice. Please make sure classes are only selected once.
+"""
 
 TESTMODE = False
 
@@ -87,25 +93,16 @@ NAME_HEALTHY = "ZebrafishHealthy"
 NAME_ALL = [
     NAME_HEALTHY,
 ]
+NAME_YOLK = "ZebrafishYolk"
 
-class ConfigFileNotReadError(Exception): pass
 
-class SameClassError(Exception): pass
+class ConfigFileNotReadError(Exception):
+    pass
 
-def get_additional_labels(names, path):
-    parser = SafeConfigParser()
-    parser.read(path)
 
-    for key, entry in parser.items('labels'):
-        names.append(entry)
-    return names
+class SameClassError(Exception):
+    pass
 
-try:
-    NAME_ALL = get_additional_labels(NAME_ALL, LABELS_FILE_PATH)
-except ConfigFileNotReadError:
-    print(CONFIG_FILE_NOT_READ_TEXT)
-
-MAX_MASK_COUNT = len(NAME_ALL)
 
 class IdentifyZebrafish(ImageProcessing):
     variable_revision_number = 1
@@ -179,20 +176,6 @@ class IdentifyZebrafish(ImageProcessing):
         instances[:] = [entry for entry in instances if entry > 0]
         return len(instances)
 
-    def cleanup_mask(self, mask):
-        connection_map = cv2.connectedComponents(mask)[1]
-        unique_values, sizes = numpy.unique(connection_map, return_counts=True)
-        unique_values = unique_values[1:]
-        sizes = sizes[1:]
-        if len(unique_values) > 2:
-            new_mask = numpy.zeros(mask.shape)
-            max_index = numpy.argmax(sizes)
-            non_max_indices = unique_values[numpy.arange(len(unique_values))!=max_index]
-            for index in non_max_indices:
-                new_mask = numpy.where(connection_map == index, 0, mask)
-            return new_mask
-        return mask
-
     def convert(self, orig_image):
         """
         The module expects the input image to be an RGB image. This is converted to BGR before
@@ -211,6 +194,12 @@ class IdentifyZebrafish(ImageProcessing):
 
         self.y_name.text = Y_NAME_TEXT
         self.y_name.doc = Y_NAME_DOC
+
+        self.manage_nms_overlap = Binary(
+            MANAGE_NMS_OVERLAP_TEXT,
+            True,
+            doc=MANAGE_NMS_OVERLAP_DOC,
+        )
 
         self.manage_intra_overlap = Choice(
             MANAGE_INTRA_OVERLAP_TEXT,
@@ -236,6 +225,14 @@ class IdentifyZebrafish(ImageProcessing):
             doc=MANAGE_YOLK_DOC,
         )
 
+        self.nms_threshold = Float(
+            MANAGE_THRESHOLD_TEXT,
+            0.6,
+            minval=0,
+            maxval=1,
+            doc=MANAGE_THRESHOLD_DOC,
+        )
+
         self.separator = Divider(
             line=True
         )
@@ -251,7 +248,7 @@ class IdentifyZebrafish(ImageProcessing):
             "",
             ADD_BUTTON_TEXT,
             self.add_image
-        )   
+        )
 
     def display(self, workspace, figure):
         if self.show_window:
@@ -266,7 +263,8 @@ class IdentifyZebrafish(ImageProcessing):
             image_names = workspace.display_data.image_names
             parent_image_pixels = workspace.display_data.parent_image_pixels
 
-            figure.subplot_imshow_grayscale(0, 0, parent_image_pixels, "Input Image")
+            figure.subplot_imshow_grayscale(
+                0, 0, parent_image_pixels, "Input Image")
             for i, (image, name) in enumerate(zip(images, image_names)):
                 figure.subplot_imshow((i + 1) // 2, (i + 1) % 2, image, name)
 
@@ -283,7 +281,7 @@ class IdentifyZebrafish(ImageProcessing):
                 class_names_user.append(name_user)
             else:
                 raise SameClassError(
-                    "Selected the same class twice. Please make sure classes are only selected once.")
+                    SAME_CLASS_ERROR_TEXT)
 
         return classes_to_predict, class_names, class_names_user
 
@@ -320,17 +318,17 @@ class IdentifyZebrafish(ImageProcessing):
                 with open(OUTPUT_FOLDER_PATH_TEST, 'wb') as f:
                     pickle.dump(output, f)
         else:
-            print("Analysing images ...")
             model = self.get_model()
+            print("Analysing images ...")
             output = model(input_)
             print("Analysis done ...")
         return output
-  
+
     def handle_inter_class_overlap(self, masks, classes_to_predict):
         # If overlap between different classes should be allowed, the masks should not be modified.
-        if self.manage_inter_overlap == INTER_OVERLAP_ALLOW:
-              return masks
-        
+        if self.manage_inter_overlap == INTER_OVERLAP_ALLOW or self.manage_nms_overlap:
+            return masks
+
         new_masks = masks.copy()
 
         combis = list(combinations(classes_to_predict, 2))
@@ -341,7 +339,7 @@ class IdentifyZebrafish(ImageProcessing):
 
             masks_overlap = (mask0 != 0) & (mask1 != 0)
             if not masks_overlap.any():
-                continue  
+                continue
 
             # Keep the value mask of the first class, discard the other.
             if self.manage_inter_overlap == INTER_OVERLAP_ASSIGN:
@@ -378,7 +376,7 @@ class IdentifyZebrafish(ImageProcessing):
                 (new_masks[combi[1]] == 0) | (mask1 == 0), 0, mask1)
 
         return new_masks
-      
+
     def handle_intra_class_overlap(self, old_mask, added_mask):
         masks_overlap = (old_mask != 0) & (added_mask != 0)
         both_masks = old_mask + added_mask
@@ -410,10 +408,10 @@ class IdentifyZebrafish(ImageProcessing):
 
         return new_mask
 
-    def non_max_suppression(self, pred_boxes, overlapThresh):
+    def non_max_suppression(self, pred_boxes, pred_class, overlapThresh):
         """
         Non-max suppression is used to ensure that bounding boxes that are predicted multiple times
-        are only displayed once.
+        are only displayed once. Finally, yolk masks are always selected.
         """
         boxes = numpy.zeros(shape=(len(pred_boxes), 4))
         for i, box in enumerate(pred_boxes):
@@ -421,60 +419,63 @@ class IdentifyZebrafish(ImageProcessing):
 
         if len(boxes) == 0:
             return []
-        
+
         pick = []
-        
-        x1 = boxes[:,0]
-        y1 = boxes[:,1]
-        x2 = boxes[:,2]
-        y2 = boxes[:,3]
-        
+
+        x1 = boxes[:, 0]
+        y1 = boxes[:, 1]
+        x2 = boxes[:, 2]
+        y2 = boxes[:, 3]
+
         area = (x2 - x1 + 1) * (y2 - y1 + 1)
         idxs = numpy.argsort(y2)
-        
+
         while len(idxs) > 0:
-            
+
             last = len(idxs) - 1
             i = idxs[last]
             pick.append(i)
-            
+
             xx1 = numpy.maximum(x1[i], x1[idxs[:last]])
             yy1 = numpy.maximum(y1[i], y1[idxs[:last]])
             xx2 = numpy.minimum(x2[i], x2[idxs[:last]])
             yy2 = numpy.minimum(y2[i], y2[idxs[:last]])
-            
+
             w = numpy.maximum(0, xx2 - xx1 + 1)
             h = numpy.maximum(0, yy2 - yy1 + 1)
-            
+
             overlap = (w * h) / area[idxs[:last]]
-            
+
             idxs = numpy.delete(idxs, numpy.concatenate(([last],
-                numpy.where(overlap > overlapThresh)[0])))
-        
+                                                         numpy.where(overlap > overlapThresh)[0])))
+
+        for idx, class_ in enumerate(pred_class):
+            if int(class_) == YOLK_CLASS and idx not in pick:
+                pick.append(idx)
         return pick
 
     def populate_masks(self, masks, output, classes_to_predict, best_box_indices):
         """
         Checks if the results of the DL model have class predictions that are selected and assign predictions to masks accordingly.
         Ocurrances of overlap are labeled with -1 and are set back to 0 after all instance_masks are added.
-        """ 
+        """
         yolk_mask = numpy.zeros(masks[0].shape)
         for i, (instance_mask, label) in enumerate(zip(output.pred_masks, output.pred_classes)):
             if i not in best_box_indices:
                 continue
             instance_mask = numpy.array(instance_mask, dtype=numpy.uint8)
-            
-            if self.require_connection:
-                instance_mask = self.cleanup_mask(instance_mask)
-            
-            if label == YOLK_CLASS:
-                yolk_mask = numpy.where(instance_mask, 1, yolk_mask)
 
-            elif label in classes_to_predict:    
+            if self.require_connection:
+                instance_mask = self.remove_non_connected(instance_mask)
+
+            if label in classes_to_predict:
                 old_mask = masks[label]
                 added_mask = instance_mask * (i + 1)
-                new_mask = self.handle_intra_class_overlap(old_mask, added_mask)
+                new_mask = self.handle_intra_class_overlap(
+                    old_mask, added_mask)
                 masks[label] = new_mask
+            if label == YOLK_CLASS:
+                yolk_mask = numpy.where(instance_mask, 1, yolk_mask)
 
         # Remove the negative numbers (indicating where overlap occured) from the masks
         for i, mask in enumerate(masks):
@@ -482,9 +483,10 @@ class IdentifyZebrafish(ImageProcessing):
                 continue
             mask[mask < 0] = 0
             masks[i] = mask
-
             if self.discard_yolk:
-                mask[yolk_mask == 1] = 0
+                # Keep the yolk mask intact, but remove the yolk from all other masks.
+                if not numpy.all(mask.astype(numpy.bool) == yolk_mask):
+                    mask[yolk_mask == 1] = 0
         return masks
 
     def post_processing(self, masks, classes_to_predict):
@@ -492,25 +494,20 @@ class IdentifyZebrafish(ImageProcessing):
         More post-processing can be added here. 'masks' is a list of length 
         len(NAME_ALL) containing a (HxW) mask of of every class that was selected
         by the user. If a class was not selected 'mask is None' evaluates to True.
-        """       
+        User inputs are handled inside the method.
+        """
         masks = self.handle_inter_class_overlap(masks, classes_to_predict)
         return masks
 
     def prepare_settings(self, setting_values):
         try:
-            # Reset setting_values[5] to the correct value
-            setting_count = int(setting_values[5])
-            # print("current allowed", setting_count)
-            # setting_values[5] = str(len(NAME_ALL))
-            # setting_count = len(NAME_ALL)
-            # print("adapted allowed", setting_count)
-            # print("actual allowed:", len(NAME_ALL))
-            
+            setting_count = int(setting_values[HIDDEN_COUNT_SETTING])
+
             if len(self.input_groups) > setting_count:
                 del self.input_groups[setting_count:]
             else:
                 for _, name in zip(
-                    range(len(self.input_groups), setting_count), 
+                    range(len(self.input_groups), setting_count),
                     NAME_ALL
                 ):
                     can_remove = False if name == NAME_HEALTHY else True
@@ -518,7 +515,7 @@ class IdentifyZebrafish(ImageProcessing):
         except ValueError:
             logging.warning(
                 'Additional image setting count was "%s" which is not an integer.',
-                setting_values[5],
+                setting_values[HIDDEN_COUNT_SETTING],
                 exc_info=True,
             )
             pass
@@ -535,8 +532,23 @@ class IdentifyZebrafish(ImageProcessing):
 
         workspace.image_set.add(mask_name, output_mask)
 
+    def remove_non_connected(self, mask):
+        connection_map = cv2.connectedComponents(mask)[1]
+        unique_values, sizes = numpy.unique(connection_map, return_counts=True)
+        unique_values = unique_values[1:]
+        sizes = sizes[1:]
+        if len(unique_values) > 2:
+            new_mask = numpy.zeros(mask.shape)
+            max_index = numpy.argmax(sizes)
+            non_max_indices = unique_values[numpy.arange(
+                len(unique_values)) != max_index]
+            for index in non_max_indices:
+                new_mask = numpy.where(connection_map == index, 0, mask)
+            return new_mask
+        return mask
+
     def run(self, workspace):
-        USE_NMS = False
+        USE_NMS = True
         workspace.display_data.statistics = []
         statistics = workspace.display_data.statistics
         image_name = self.x_name.value
@@ -544,23 +556,28 @@ class IdentifyZebrafish(ImageProcessing):
         parent_image_pixels = parent_image.pixel_data
 
         input_ = self.convert(parent_image_pixels)
-        
+
         output = self.generate_output(input_)
-        
-        if USE_NMS:
-            best_box_indices = self.non_max_suppression(output.pred_boxes, THRESHOLD)
+
+        # TODO: CHECK RANGE OF self.threshold.value
+
+        if self.manage_nms_overlap:
+            best_box_indices = self.non_max_suppression(
+                output.pred_boxes, output.pred_classes, self.nms_threshold.value)
         else:
             best_box_indices = range(len(output.pred_boxes))
 
         classes_to_predict, class_names, class_names_user = self.get_classes_to_predict(
             workspace)
 
-        masks = self.get_empty_masks(classes_to_predict, (parent_image_pixels.shape[0], parent_image_pixels.shape[1]))
-        
-        masks = self.populate_masks(masks, output, classes_to_predict, best_box_indices)
-            
+        masks = self.get_empty_masks(
+            classes_to_predict, (parent_image_pixels.shape[0], parent_image_pixels.shape[1]))
+
+        masks = self.populate_masks(
+            masks, output, classes_to_predict, best_box_indices)
+
         masks = self.post_processing(masks, classes_to_predict)
-       
+
         instance_count = self.calc_number_of_accepted_instances(masks)
         statistics.append(["# of accepted objects", "%d" % instance_count])
 
@@ -568,10 +585,15 @@ class IdentifyZebrafish(ImageProcessing):
             if i not in classes_to_predict or mask is None:
                 continue
             if mask.max() != 0:
-                # Scale the mask to fit between 0.5 and 1 to ensure it is processed properly by ConvertImageToObjects.
+                """
+                Scale the mask to fit between 0.5 and 1 to ensure it is processed properly by ConvertImageToObjects,
+                then, set background to 0.
+                """ 
+
                 mask = mask.astype("float16")
                 mask *= (1/(255 * 2))
                 mask += 0.5
+                mask[mask == 0.5] = 0
             self.provide_to_workspace(
                 workspace=workspace,
                 parent_image=parent_image,
@@ -585,8 +607,6 @@ class IdentifyZebrafish(ImageProcessing):
             workspace.display_data.images = []
             workspace.display_data.image_names = []
             for (mask, name) in zip(masks, class_names):
-                if name == "ZebrafishYolk":
-                    continue
                 workspace.display_data.images.append(mask)
                 workspace.display_data.image_names.append(name)
 
@@ -595,11 +615,13 @@ class IdentifyZebrafish(ImageProcessing):
 
         settings += [
             self.x_name,
+            self.manage_nms_overlap,
             self.manage_intra_overlap,
             self.manage_inter_overlap,
             self.input_group_count,
             self.require_connection,
             self.discard_yolk,
+            self.nms_threshold,
         ]
 
         for group in self.input_groups:
@@ -613,10 +635,21 @@ class IdentifyZebrafish(ImageProcessing):
     def visible_settings(self):
         visible_settings = [
             self.x_name,
-            self.manage_intra_overlap,            
-            self.manage_inter_overlap,
             self.require_connection,
             self.discard_yolk,
+            self.manage_nms_overlap,
+        ]
+        if self.manage_nms_overlap:
+            visible_settings += [
+                self.nms_threshold,
+            ]
+        else:
+            visible_settings += [
+                self.manage_inter_overlap,
+            ]
+
+        visible_settings += [
+            self.manage_intra_overlap,
         ]
 
         for total in self.input_groups:
@@ -629,3 +662,21 @@ class IdentifyZebrafish(ImageProcessing):
 
     def volumetric(self):
         return False
+
+def read_config_file(names, path, yolk_class = 3):
+    parser = SafeConfigParser()
+    parser.read(path)
+
+    yolk_class = int(parser['yolk class']['class'])
+    
+    for _, entry in parser.items('labels'):
+        names.append(entry)
+    return names, yolk_class
+
+try:
+    NAME_ALL, YOLK_CLASS = read_config_file(
+        NAME_ALL, CONFIG_FILE_PATH)
+except ConfigFileNotReadError:
+    print(CONFIG_FILE_NOT_READ_TEXT)
+
+MAX_MASK_COUNT = len(NAME_ALL)
