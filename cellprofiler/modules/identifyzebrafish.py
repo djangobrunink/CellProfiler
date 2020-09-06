@@ -227,7 +227,7 @@ class IdentifyZebrafish(ImageProcessing):
 
         self.nms_threshold = Float(
             MANAGE_THRESHOLD_TEXT,
-            0.6,
+            0.3,
             minval=0,
             maxval=1,
             doc=MANAGE_THRESHOLD_DOC,
