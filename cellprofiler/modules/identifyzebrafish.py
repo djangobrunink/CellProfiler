@@ -437,12 +437,12 @@ class IdentifyZebrafish(ImageProcessing):
             if model == None:
                 print("Generating model ...")
                 model = self.get_model()
-                print("Generated model ...")
+                print("Model generated.")
             else:
                 print("Using stored model ...")                
             print("Analysing images ...")
             output = model(input_)
-            print("Analysis done ...")
+            print("Analysis done.")
         return output
 
     def handle_inter_class_overlap(self, masks, classes_to_predict):
