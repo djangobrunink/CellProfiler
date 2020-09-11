@@ -15,34 +15,17 @@ from cellprofiler_core.image import Image
 from cellprofiler_core.setting import Binary, Divider, HiddenCount, SettingsGroup
 from cellprofiler_core.setting.choice import Choice
 from cellprofiler_core.setting.do_something import DoSomething, RemoveSettingButton
-from cellprofiler_core.setting.text import ImageName, Float
+from cellprofiler_core.setting.text import ImageName, Float, Directory
 
 import pickle
 __doc__ = ""
 
+# Paths
+WEIGHT_FOLDER_PATH = r'weights/caffe2/'
+CONFIG_FILE_PATH = r'config/config.cfg'
 
-# Settings text which is referenced in various places in the help
-X_NAME_TEXT = "Select the input image."
-Y_NAME_TEXT = "Name the zebrafish to be identified."
-MANAGE_NMS_OVERLAP_TEXT = "Handle overlap automatically?"
-MANAGE_INTER_OVERLAP_TEXT = "How to handle overlapping regions between different types of zebrafish?"
-MANAGE_INTRA_OVERLAP_TEXT = "How to handle overlapping regions between the same types of zebrafish?"
-MANAGE_REQUIRE_CONNECTION_TEXT = "Discard predicted sections that are not connected to the main instance?"
-MANAGE_YOLK_TEXT = "Discard yolk from the predicted mask?"
-MANAGE_THRESHOLD_TEXT = "Set the threshold value for automatic detection."
-INPUT_GROUP_COUNT_TEXT = "Input group count."
-GENERATE_IMAGE_FOR_TEXT = "For which type of zebrafish do you want to generate an image?"
-ADD_BUTTON_TEXT = "Add a new image"
-
-# Doc
-X_NAME_DOC = "Select the image that you want to use to identify zebrafish."
-Y_NAME_DOC = "Enter the name that you want to call the zebrafish identified by this module."
-MANAGE_INTRA_OVERLAP_DOC = ""
-MANAGE_INTER_OVERLAP_DOC = ""
-MANAGE_REQUIRE_CONNECTION_DOC = ""
-MANAGE_YOLK_DOC = ""
-MANAGE_THRESHOLD_DOC = ""
-MANAGE_NMS_OVERLAP_DOC = ""
+# Test path
+OUTPUT_FOLDER_PATH_TEST = r'outputs/output.txt'
 
 # Settings choices
 INTER_OVERLAP_ALLOW = "Allow overlap between different types of zebrafish."
@@ -65,27 +48,111 @@ INTRA_OVERLAP_ALL = [
     INTRA_OVERLAP_EXCLUDE_INSTANCES
 ]
 
-# Setting values
-HIDDEN_COUNT_SETTING = 6
+# Settings text which is referenced in various places in the help
+X_NAME_TEXT = "Select the input image."
+Y_NAME_TEXT = "Name the zebrafish to be identified."
+MANAGE_MODEL_INPUT_TEXT = "Select the location of the weights of the model."
+MANAGE_NMS_OVERLAP_TEXT = "Handle overlap automatically?"
+MANAGE_INTER_OVERLAP_TEXT = "How to handle overlapping regions between different types of zebrafish?"
+MANAGE_INTRA_OVERLAP_TEXT = "How to handle overlapping regions between the same types of zebrafish?"
+MANAGE_REQUIRE_CONNECTION_TEXT = "Discard predicted sections that are not connected to the main instance?"
+MANAGE_YOLK_TEXT = "Discard yolk from the predicted mask?"
+MANAGE_OUTPUT_FISH_THRESHOLD_TEXT = "Set the threshold for the output score of zebrafish."
+MANAGE_OUTPUT_YOLK_THRESHOLD_TEXT = "Set the threshold for the output score of yolk."
+MANAGE_NMS_THRESHOLD_TEXT = "Set the threshold value for automatic detection."
+INPUT_GROUP_COUNT_TEXT = "Input group count."
+GENERATE_IMAGE_FOR_TEXT = "For which type of zebrafish do you want to generate an image?"
+ADD_BUTTON_TEXT = "Add a new image."
 
-# Paths
-WEIGHT_FOLDER_PATH = r'weights/caffe2/large_fish'
-MODEL_FILE_PATH = r'model/model.txt'
-OUTPUT_FOLDER_PATH_TEST = r'outputs/output.txt'
-CONFIG_FILE_PATH = r'config/config.cfg'
+# Doc
+X_NAME_DOC = "Select the image that you want to use to identify zebrafish."
+Y_NAME_DOC = "Enter the name that you want to call the zebrafish identified by this module."
+MANAGE_MODEL_INPUT_DOC = """\
+You can choose the specific weight folder this module will use to analyse the image. Folders available in 
+*{WEIGHT_FOLDER_PATH}* in the CellProfiler directory are displayed.
+""".format(
+    **{
+        "WEIGHT_FOLDER_PATH": WEIGHT_FOLDER_PATH
+    }
+)
+MANAGE_INTRA_OVERLAP_DOC = """\
+This setting selects the way overlap within the same class is handled. \n
+- "*{INTRA_OVERLAP_ASSIGN}*" assigns an overlapping area to the first instance. \n
+- "*{INTRA_OVERLAP_EXCLUDE_REGION}*" excludes the overlapping region from the final mask. \n
+- "*{INTRA_OVERLAP_EXCLUDE_INSTANCES}*" excludes all instances of zebrafish that contain any overlap.
+""".format(
+    **{
+        "INTRA_OVERLAP_ASSIGN" : INTRA_OVERLAP_ASSIGN,
+        "INTRA_OVERLAP_EXCLUDE_REGION" : INTRA_OVERLAP_EXCLUDE_REGION,
+        "INTRA_OVERLAP_EXCLUDE_INSTANCES" : INTRA_OVERLAP_EXCLUDE_INSTANCES, 
+    }
+)
+MANAGE_INTER_OVERLAP_DOC = """\
+This setting selects the way overlap between different classes is handled. \n
+- "*{INTER_OVERLAP_ALLOW}*" does not alter the masks. \n
+- "*{INTER_OVERLAP_ASSIGN}*" assigns an overlapping are to the class highest in the selected order. \n 
+- "*{INTER_OVERLAP_EXCLUDE_REGION}*" excludes the overlapping region from both final masks. \n
+- "*{INTER_OVERLAP_EXCLUDE_INSTANCE}*" excludes all instances of zebrafish that contain any overlap.
+""".format(
+    **{
+        "INTER_OVERLAP_ALLOW" : INTER_OVERLAP_ALLOW,
+        "INTER_OVERLAP_ASSIGN" : INTER_OVERLAP_ASSIGN,
+        "INTER_OVERLAP_EXCLUDE_REGION" : INTER_OVERLAP_EXCLUDE_REGION,
+        "INTER_OVERLAP_EXCLUDE_INSTANCE" : INTER_OVERLAP_EXCLUDE_INSTANCE,
+    }
+)
+MANAGE_REQUIRE_CONNECTION_DOC = """\
+If this option is selected, the module discards any parts not connected to the largest instance. This is done
+for every prediction the model makes before any other processing.
+"""
+MANAGE_YOLK_DOC = """\
+If this option is selected, the module will discard any parts of the mask where yolk is present.
+"""
+MANAGE_NMS_THRESHOLD_DOC = """\
+This sets the threshold value used by the automatic overlap handling (NMS). A value of 0.2 - 0.3 tends to work well.
+Value must be between 0 and 1. 0 requires no overlap to merge two bouding boxes, 1 requires perfect overlap to merge 
+two bounding boxes.
+"""
+MANAGE_OUTPUT_FISH_THRESHOLD_DOC = """\
+The model is trained on a threshold for the score of 0.6. This values changes the threshold for fish instances only.
+Changing this value could have adverse effects to the accuracy of the model. Value must be between 0 and 1. A 
+threshold of 0 allows all predictions, a threshold of 1 discards all predictions.
+"""
+MANAGE_OUTPUT_YOLK_THRESHOLD_DOC = """\
+The model is trained on a threshold for the score of 0.6. This values changes the threshold for yolk instances only.
+Changing this value could have adverse effects to the accuracy of the model. Value must be between 0 and 1. A 
+threshold of 0 allows all predictions, a threshold of 1 discards all predictions.
+"""
+MANAGE_NMS_OVERLAP_DOC = """\
+Automatic handling of overlap employs non-max suppresion (NMS). In short, NMS takes a bounding box of a prediction,
+and compares it to all others. If sufficient overlap is found (set by threshold value), the two predictions are
+considered one object and merged. 
+"""
+
+# Setting values
+HIDDEN_COUNT_SETTING = 9
 
 # Error messages
 CONFIG_FILE_NOT_READ_TEXT = """\
 Config file with additional labels was not read. Please make sure it exists 
 as *{CONFIG_FILE_PATH}* in the CellProfiler installation directory.
-Only ZebrafishHealthy will be available.""".format(
+Only ZebrafishHealthy will be available.
+""".format(
     **{
-        "CONFIG_FILE_PATH": CONFIG_FILE_PATH
+        "CONFIG_FILE_PATH": CONFIG_FILE_PATH,
     }
 )
-SAME_CLASS_ERROR_TEXT = """
-    Selected the same class twice. Please make sure classes are only selected once.
+SAME_CLASS_ERROR_TEXT = """\
+Selected the same class twice. Please make sure classes are only selected once.
 """
+MODEL_SOURCE_ERROR_TEXT = """\
+The selected weight folder does not contain the expected files. Please check
+*{WEIGHT_FOLDER_PATH}* in the CellProfiler installation directory.
+""".format(
+    **{
+        "WEIGHT_FOLDER_PATH": WEIGHT_FOLDER_PATH,
+    }
+)
 
 TESTMODE = False
 
@@ -95,14 +162,16 @@ NAME_ALL = [
 ]
 NAME_YOLK = "ZebrafishYolk"
 
+model = None
 
 class ConfigFileNotReadError(Exception):
     pass
 
-
 class SameClassError(Exception):
     pass
 
+class ModelSourceError(Exception):
+    pass
 
 class IdentifyZebrafish(ImageProcessing):
     variable_revision_number = 1
@@ -167,6 +236,21 @@ class IdentifyZebrafish(ImageProcessing):
 
         self.input_groups.append(group)
 
+    def apply_output_threshold(self, scores, classes):
+        yolk_threshold = self.output_yolk_threshold.value
+        fish_threshold = self.output_fish_threshold.value
+        assert 0 <= yolk_threshold <= 1, "Use a threshold value between 0 and 1 for yolk. Value was %d" % yolk_threshold
+        assert 0 <= fish_threshold <= 1, "Use a threshold value between 0 and 1 for zebrafish. Value was %d" % fish_threshold
+        passed_threshold_indices = []
+        for i, (score, class_) in enumerate(zip(scores, classes)):
+            if class_ == YOLK_CLASS:
+                if score >= yolk_threshold:
+                    passed_threshold_indices.append(i)
+            else:
+                if score >= fish_threshold:
+                    passed_threshold_indices.append(i)
+        return passed_threshold_indices
+
     def calc_number_of_accepted_instances(self, masks):
         instances = []
         for mask in masks:
@@ -194,6 +278,29 @@ class IdentifyZebrafish(ImageProcessing):
 
         self.y_name.text = Y_NAME_TEXT
         self.y_name.doc = Y_NAME_DOC
+
+        self.model_source = Directory(
+            MANAGE_MODEL_INPUT_TEXT,
+            value=None,
+            dir_choices=[model for model in os.listdir(WEIGHT_FOLDER_PATH) if os.path.isdir(os.path.join(WEIGHT_FOLDER_PATH, model))],
+            doc=MANAGE_MODEL_INPUT_DOC,
+        )
+
+        self.output_fish_threshold = Float(
+            MANAGE_OUTPUT_FISH_THRESHOLD_TEXT,
+            0.6,
+            minval=0,
+            maxval=1,
+            doc=MANAGE_OUTPUT_FISH_THRESHOLD_DOC,
+        )
+
+        self.output_yolk_threshold = Float(
+            MANAGE_OUTPUT_YOLK_THRESHOLD_TEXT,
+            0.6,
+            minval=0,
+            maxval=1,
+            doc=MANAGE_OUTPUT_YOLK_THRESHOLD_DOC,
+        )
 
         self.manage_nms_overlap = Binary(
             MANAGE_NMS_OVERLAP_TEXT,
@@ -226,11 +333,11 @@ class IdentifyZebrafish(ImageProcessing):
         )
 
         self.nms_threshold = Float(
-            MANAGE_THRESHOLD_TEXT,
+            MANAGE_NMS_THRESHOLD_TEXT,
             0.3,
             minval=0,
             maxval=1,
-            doc=MANAGE_THRESHOLD_DOC,
+            doc=MANAGE_NMS_THRESHOLD_DOC,
         )
 
         self.separator = Divider(
@@ -266,7 +373,7 @@ class IdentifyZebrafish(ImageProcessing):
             figure.subplot_imshow_grayscale(
                 0, 0, parent_image_pixels, "Input Image")
             for i, (image, name) in enumerate(zip(images, image_names)):
-                figure.subplot_imshow((i + 1) // 2, (i + 1) % 2, image, name)
+                figure.subplot_imshow((i + 1) // 2, (i + 1) % 2, image, name) 
 
     def get_classes_to_predict(self, workspace):
         classes_to_predict = []
@@ -299,26 +406,40 @@ class IdentifyZebrafish(ImageProcessing):
         return masks
 
     def get_model(self):
-        print("Generating model ...")
-        model = Caffe2Model.load_protobuf(WEIGHT_FOLDER_PATH)
-        print("Generated model ...")
+        try:
+            source = self.model_source.value
+            if source.endswith('|'):
+                source = source.rstrip('|')
+            model = Caffe2Model.load_protobuf(os.path.join(WEIGHT_FOLDER_PATH, source))
+        except:
+            raise ModelSourceError(MODEL_SOURCE_ERROR_TEXT)
         return model
 
-    def generate_output(self, input_):
+    def get_dictionary(self):
+        pass
+
+    def generate_output(self, input_,):
         """
         Passing the images through the DL model.
         """
+        global model
         if TESTMODE:
             if os.path.exists(OUTPUT_FOLDER_PATH_TEST):
                 with open(OUTPUT_FOLDER_PATH_TEST, 'rb') as f:
                     output = pickle.load(f)
             else:
-                model = self.get_model()
+                if model == None:
+                    model = self.get_model()
                 output = model(input_)
                 with open(OUTPUT_FOLDER_PATH_TEST, 'wb') as f:
                     pickle.dump(output, f)
         else:
-            model = self.get_model()
+            if model == None:
+                print("Generating model ...")
+                model = self.get_model()
+                print("Generated model ...")
+            else:
+                print("Using stored model ...")                
             print("Analysing images ...")
             output = model(input_)
             print("Analysis done ...")
@@ -454,14 +575,14 @@ class IdentifyZebrafish(ImageProcessing):
                 pick.append(idx)
         return pick
 
-    def populate_masks(self, masks, output, classes_to_predict, best_box_indices):
+    def populate_masks(self, masks, output, classes_to_predict, passed_threshold_indices, best_box_indices):
         """
         Checks if the results of the DL model have class predictions that are selected and assign predictions to masks accordingly.
         Ocurrances of overlap are labeled with -1 and are set back to 0 after all instance_masks are added.
         """
         yolk_mask = numpy.zeros(masks[0].shape)
         for i, (instance_mask, label) in enumerate(zip(output.pred_masks, output.pred_classes)):
-            if i not in best_box_indices:
+            if i not in best_box_indices or i not in passed_threshold_indices:
                 continue
             instance_mask = numpy.array(instance_mask, dtype=numpy.uint8)
 
@@ -548,7 +669,6 @@ class IdentifyZebrafish(ImageProcessing):
         return mask
 
     def run(self, workspace):
-        USE_NMS = True
         workspace.display_data.statistics = []
         statistics = workspace.display_data.statistics
         image_name = self.x_name.value
@@ -558,7 +678,8 @@ class IdentifyZebrafish(ImageProcessing):
         input_ = self.convert(parent_image_pixels)
 
         output = self.generate_output(input_)
-
+        
+        passed_output_threshold_indices = self.apply_output_threshold(output.scores, output.pred_classes)
         # TODO: CHECK RANGE OF self.threshold.value
 
         if self.manage_nms_overlap:
@@ -574,7 +695,7 @@ class IdentifyZebrafish(ImageProcessing):
             classes_to_predict, (parent_image_pixels.shape[0], parent_image_pixels.shape[1]))
 
         masks = self.populate_masks(
-            masks, output, classes_to_predict, best_box_indices)
+            masks, output, classes_to_predict, passed_output_threshold_indices, best_box_indices)
 
         masks = self.post_processing(masks, classes_to_predict)
 
@@ -594,6 +715,8 @@ class IdentifyZebrafish(ImageProcessing):
                 mask *= (1/(255 * 2))
                 mask += 0.5
                 mask[mask == 0.5] = 0
+                masks[i] = mask
+                
             self.provide_to_workspace(
                 workspace=workspace,
                 parent_image=parent_image,
@@ -606,7 +729,7 @@ class IdentifyZebrafish(ImageProcessing):
             workspace.display_data.parent_image_pixels = parent_image_pixels
             workspace.display_data.images = []
             workspace.display_data.image_names = []
-            for (mask, name) in zip(masks, class_names):
+            for (mask, name) in zip(masks, class_names_user):
                 workspace.display_data.images.append(mask)
                 workspace.display_data.image_names.append(name)
 
@@ -615,6 +738,9 @@ class IdentifyZebrafish(ImageProcessing):
 
         settings += [
             self.x_name,
+            self.model_source,
+            self.output_fish_threshold,
+            self.output_yolk_threshold,
             self.manage_nms_overlap,
             self.manage_intra_overlap,
             self.manage_inter_overlap,
@@ -635,8 +761,11 @@ class IdentifyZebrafish(ImageProcessing):
     def visible_settings(self):
         visible_settings = [
             self.x_name,
+            self.model_source,
             self.require_connection,
             self.discard_yolk,
+            self.output_fish_threshold,
+            self.output_yolk_threshold,
             self.manage_nms_overlap,
         ]
         if self.manage_nms_overlap:
