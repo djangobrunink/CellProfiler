@@ -379,11 +379,12 @@ class IdentifyZebrafish(ImageProcessing):
         classes_to_predict = []
         class_names = []
         class_names_user = []
-        for i, group in enumerate(self.input_groups):
+        for group in self.input_groups:
             name = group.generate_image_for.value
             name_user = group.output_image_name.value
             if name not in class_names:
-                classes_to_predict.append(i)
+                class_index = NAME_ALL.index(name)
+                classes_to_predict.append(class_index)
                 class_names.append(name)
                 class_names_user.append(name_user)
             else:
@@ -414,9 +415,6 @@ class IdentifyZebrafish(ImageProcessing):
         except:
             raise ModelSourceError(MODEL_SOURCE_ERROR_TEXT)
         return model
-
-    def get_dictionary(self):
-        pass
 
     def generate_output(self, input_,):
         """
@@ -653,6 +651,13 @@ class IdentifyZebrafish(ImageProcessing):
 
         workspace.image_set.add(mask_name, output_mask)
 
+    def rearrange_masks(self, masks, class_names):
+        order = []
+        for i, name in enumerate(class_names):
+            order.append(NAME_ALL.index(name))
+        masks = [masks[i] for i in order]
+        return masks
+
     def remove_non_connected(self, mask):
         connection_map = cv2.connectedComponents(mask)[1]
         unique_values, sizes = numpy.unique(connection_map, return_counts=True)
@@ -680,7 +685,6 @@ class IdentifyZebrafish(ImageProcessing):
         output = self.generate_output(input_)
         
         passed_output_threshold_indices = self.apply_output_threshold(output.scores, output.pred_classes)
-        # TODO: CHECK RANGE OF self.threshold.value
 
         if self.manage_nms_overlap:
             best_box_indices = self.non_max_suppression(
@@ -698,6 +702,8 @@ class IdentifyZebrafish(ImageProcessing):
             masks, output, classes_to_predict, passed_output_threshold_indices, best_box_indices)
 
         masks = self.post_processing(masks, classes_to_predict)
+        
+        masks = self.rearrange_masks(masks, class_names)
 
         instance_count = self.calc_number_of_accepted_instances(masks)
         statistics.append(["# of accepted objects", "%d" % instance_count])
