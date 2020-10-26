@@ -145,6 +145,9 @@ Only ZebrafishHealthy will be available.
 SAME_CLASS_ERROR_TEXT = """\
 Selected the same class twice. Please make sure classes are only selected once.
 """
+IMAGE_NOT_CORRECT_ERROR_TEXT = """\
+The supplied image is not grayscale or color. Please supply a image in the correct format.
+"""
 MODEL_SOURCE_ERROR_TEXT = """\
 The selected weight folder does not contain the expected files. Please check
 *{WEIGHT_FOLDER_PATH}* in the CellProfiler installation directory.
@@ -155,6 +158,7 @@ The selected weight folder does not contain the expected files. Please check
 )
 
 TESTMODE = False
+SAVE_NEW_OUTPUT = False
 
 NAME_HEALTHY = "ZebrafishHealthy"
 NAME_ALL = [
@@ -171,6 +175,9 @@ class SameClassError(Exception):
     pass
 
 class ModelSourceError(Exception):
+    pass
+
+class ImageNotCorrectError(Exception):
     pass
 
 class IdentifyZebrafish(ImageProcessing):
@@ -266,8 +273,18 @@ class IdentifyZebrafish(ImageProcessing):
         providing it to the DL model. Any future transformations that need to be done before 
         passing an image through the DL model can be added here.
         """
-        r, g, b = cv2.split(orig_image)
-        bgr_image = cv2.merge((b, g, r))
+        
+        assert orig_image.ndim in (2, 3), "Image should be grayscale or RGB"
+        if orig_image.ndim == 2:
+            gray = orig_image
+            bgr_image = cv2.merge((gray, gray, gray))
+
+        elif orig_image.ndim == 3:
+            r, g, b = cv2.split(orig_image)
+            bgr_image = cv2.merge((b, g, r))
+
+        else:
+            raise ImageNotCorrectError(IMAGE_NOT_CORRECT_ERROR_TEXT)
         return bgr_image
 
     def create_settings(self):
@@ -413,7 +430,8 @@ class IdentifyZebrafish(ImageProcessing):
                 source = source.rstrip('|')
             model = Caffe2Model.load_protobuf(os.path.join(WEIGHT_FOLDER_PATH, source))
         except:
-            raise ModelSourceError(MODEL_SOURCE_ERROR_TEXT)
+            raise ModelSourceError(
+                MODEL_SOURCE_ERROR_TEXT)
         return model
 
     def generate_output(self, input_,):
@@ -422,12 +440,14 @@ class IdentifyZebrafish(ImageProcessing):
         """
         global model
         if TESTMODE:
-            if os.path.exists(OUTPUT_FOLDER_PATH_TEST):
+            if os.path.exists(OUTPUT_FOLDER_PATH_TEST) and not SAVE_NEW_OUTPUT:
                 with open(OUTPUT_FOLDER_PATH_TEST, 'rb') as f:
                     output = pickle.load(f)
             else:
                 if model == None:
+                    print("Generating model ...")
                     model = self.get_model()
+                    print("Model generated.")
                 output = model(input_)
                 with open(OUTPUT_FOLDER_PATH_TEST, 'wb') as f:
                     pickle.dump(output, f)
@@ -652,11 +672,14 @@ class IdentifyZebrafish(ImageProcessing):
         workspace.image_set.add(mask_name, output_mask)
 
     def rearrange_masks(self, masks, class_names):
+        """
+        Arrange the masks in the same order the user selected in the UI.
+        """
         order = []
         for i, name in enumerate(class_names):
             order.append(NAME_ALL.index(name))
-        masks = [masks[i] for i in order]
-        return masks
+        new_masks = [masks[i] for i in order]
+        return new_masks
 
     def remove_non_connected(self, mask):
         connection_map = cv2.connectedComponents(mask)[1]
@@ -678,6 +701,7 @@ class IdentifyZebrafish(ImageProcessing):
         statistics = workspace.display_data.statistics
         image_name = self.x_name.value
         parent_image = workspace.image_set.get_image(image_name)
+        
         parent_image_pixels = parent_image.pixel_data
 
         input_ = self.convert(parent_image_pixels)
@@ -709,8 +733,6 @@ class IdentifyZebrafish(ImageProcessing):
         statistics.append(["# of accepted objects", "%d" % instance_count])
 
         for i, (mask, name) in enumerate(zip(masks, class_names_user)):
-            if i not in classes_to_predict or mask is None:
-                continue
             if mask.max() != 0:
                 """
                 Scale the mask to fit between 0.5 and 1 to ensure it is processed properly by ConvertImageToObjects,
