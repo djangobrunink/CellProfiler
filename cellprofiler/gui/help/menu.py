@@ -1,7 +1,9 @@
 # coding:utf-8
 
 import webbrowser
+import wx.adv
 
+from cellprofiler.gui.dialog import AboutDialogInfo
 import cellprofiler.gui.help.content
 import cellprofiler.gui.help.search
 import cellprofiler.gui.htmldialog
@@ -18,6 +20,8 @@ class Menu(cellprofiler.gui.menu.Menu):
             "Show Welcome Screen",
             event_fn=lambda _: self.frame.show_welcome_screen(True),
         )
+
+        self.append("Search help...", event_fn=lambda _: self.__on_search_help())
 
         self.append("Online Manual", event_fn=self.__on_help_online_manual)
 
@@ -95,7 +99,18 @@ class Menu(cellprofiler.gui.menu.Menu):
 
         self.AppendSeparator()
 
-        self.append("Search help...", event_fn=lambda _: self.__on_search_help())
+        self.append("Check for updates", event_fn=self.find_update)
+
+        self.append("About CellProfiler", event_fn=lambda _: self.about())
+
+    @staticmethod
+    def about():
+        info = AboutDialogInfo()
+        wx.adv.AboutBox(info)
+
+    def find_update(self, event):
+        from cellprofiler.gui.checkupdate import check_update
+        check_update(self.frame, force=True)
 
     def __figure_menu(self):
         figure_menu = cellprofiler.gui.menu.Menu(self.frame)

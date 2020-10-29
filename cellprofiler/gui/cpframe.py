@@ -24,7 +24,6 @@ import cellprofiler.gui
 import cellprofiler.gui.utilities.icon
 from ._welcome_frame import WelcomeFrame
 from ._workspace_model import Workspace
-from .dialog import AboutDialogInfo
 from .utilities.figure import close_all
 from .help.content import read_content
 from .help.menu import Menu
@@ -108,6 +107,7 @@ ID_EDIT_REMOVE_FROM_FILE_LIST = wx.NewId()
 ID_EDIT_SHOW_FILE_LIST_IMAGE = wx.NewId()
 ID_EDIT_ENABLE_MODULE = wx.NewId()
 ID_EDIT_GO_TO_MODULE = wx.NewId()
+ID_FIND_USAGES = wx.NewId()
 
 ID_OPTIONS_PREFERENCES = wx.ID_PREFERENCES
 ID_CHECK_NEW_VERSION = wx.NewId()
@@ -145,7 +145,6 @@ WINDOW_IDS = []
 
 ID_HELP_MODULE = wx.NewId()
 ID_HELP_SOURCE_CODE = wx.NewId()
-ID_HELP_ABOUT = wx.ID_ABOUT
 
 
 class CPFrame(wx.Frame):
@@ -825,7 +824,8 @@ class CPFrame(wx.Frame):
             "Open the plate viewer to inspect the images in the current workspace",
         )
 
-        self.__menu_window.AppendSeparator()
+        if sys.platform == "win32":
+            self.__menu_window.AppendSeparator()
 
         self.__menu_help = Menu(self)
 
@@ -841,7 +841,7 @@ class CPFrame(wx.Frame):
                 "Initialize sampling up to current module",
             )
             self.__menu_bar.Append(self.__menu_sample, "&Sample")
-        self.__menu_bar.Append(self.__menu_window, "&Window")
+        self.__menu_bar.Append(self.__menu_window, "&Windows")
         if wx.VERSION <= (2, 8, 10, 1, "") and wx.Platform == "__WXMAC__":
             self.__menu_bar.Append(self.__menu_help, "CellProfiler Help")
         else:
@@ -871,7 +871,6 @@ class CPFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.__on_help_module, id=ID_HELP_MODULE)
         self.Bind(wx.EVT_BUTTON, self.__on_help_module, id=ID_HELP_MODULE)
 
-        self.Bind(wx.EVT_MENU, self.about, id=ID_HELP_ABOUT)
         self.Bind(wx.EVT_MENU, self.__on_preferences, id=ID_OPTIONS_PREFERENCES)
         self.Bind(wx.EVT_MENU, self.__on_close_all, id=ID_WINDOW_CLOSE_ALL)
         self.Bind(wx.EVT_MENU, self.__debug_pdb, id=ID_DEBUG_PDB)
@@ -1054,12 +1053,6 @@ class CPFrame(wx.Frame):
             self, "Test Mode Help", rst_to_html_fragment(contents),
         )
         help_dialog.Show()
-
-    @staticmethod
-    def about(event):
-        info = AboutDialogInfo()
-
-        wx.adv.AboutBox(info)
 
     def __on_help_welcome(self, event):
         self.show_welcome_screen(True)

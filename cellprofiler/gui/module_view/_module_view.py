@@ -10,7 +10,6 @@ import wx.grid
 import wx.lib.colourselect
 import wx.lib.resizewidget
 import wx.lib.scrolledpanel
-from cellprofiler_core.pipeline import ImagePlane
 from cellprofiler_core.pipeline import ModuleEdited
 from cellprofiler_core.pipeline import ModuleRemoved
 from cellprofiler_core.pipeline import PipelineCleared
@@ -34,6 +33,7 @@ from cellprofiler_core.setting import DoThings
 from cellprofiler_core.setting import FigureSubscriber
 from cellprofiler_core.setting import FileCollectionDisplay
 from cellprofiler_core.setting import HTMLText
+from cellprofiler_core.setting import ImagePlane
 from cellprofiler_core.setting import Joiner
 from cellprofiler_core.setting import Measurement
 from cellprofiler_core.setting import RegexpText
@@ -1488,13 +1488,8 @@ class ModuleView:
             ):
                 custom_label.Label = "Sub-folder:"
             elif v.dir_choice == URL_FOLDER_NAME:
-                if v.support_urls:
-                    custom_label.Label = "URL:"
-                    custom_label.Show()
-                    custom_ctrl.Show()
-                else:
-                    custom_label.Hide()
-                    custom_ctrl.Hide()
+                custom_label.Hide()
+                custom_ctrl.Hide()
                 browse_ctrl.Hide()
             if custom_ctrl.Value != v.custom_path:
                 custom_ctrl.Value = v.custom_path
@@ -1574,6 +1569,7 @@ class ModuleView:
                 if url is not None:
                     value = v.build(url)
                     self.on_value_change(v, control, value, event)
+                    url_control.Value = url2pathname(v.value)
 
             browse_button.Bind(wx.EVT_BUTTON, on_button)
         else:
@@ -2123,12 +2119,16 @@ class ModuleView:
     def __on_checklistbox_change(self, event, setting, control):
         if not self.__handle_change:
             return
+        if hasattr(event, "refresh_now"):
+            timeout = None
+        else:
+            timeout = CHECK_TIMEOUT_SEC * 1000
         self.on_value_change(
             setting,
             control,
             control.GetChecked(),
             event,
-            timeout=CHECK_TIMEOUT_SEC * 1000,
+            timeout=timeout,
         )
 
     def __on_multichoice_change(self, event, setting, control):

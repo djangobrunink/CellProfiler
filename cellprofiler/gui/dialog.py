@@ -1,7 +1,8 @@
-# coding=utf-8
-
 import wx
 import wx.adv
+
+from cellprofiler import __version__
+from cellprofiler.gui.utilities.icon import get_cp_icon
 
 
 class AboutDialogInfo(wx.adv.AboutDialogInfo):
@@ -13,8 +14,8 @@ class AboutDialogInfo(wx.adv.AboutDialogInfo):
         )
 
         self.SetName("CellProfiler")
-
-        self.SetVersion("4.0.0rc11")
+        self.SetVersion(__version__)
+        self.SetIcon(get_cp_icon(100))
 
 
 class Error(wx.MessageDialog):

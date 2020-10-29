@@ -14,7 +14,6 @@ import re
 import string
 import sys
 import threading
-import traceback
 from functools import reduce, cmp_to_key
 from queue import PriorityQueue, Queue, Empty
 from urllib.request import urlretrieve, url2pathname
@@ -125,6 +124,7 @@ from cellprofiler_core.preferences import (
     set_default_output_directory,
     get_max_workers,
     set_default_image_directory,
+    get_telemetry,
 )
 from cellprofiler_core.setting import ValidationError
 from cellprofiler_core.utilities.core.modules import (
@@ -1134,7 +1134,7 @@ class PipelineController(object):
         "/images/A01_w1.tif","/images/A01_w2.tif"
         "/images/A02_w1.tif","/images/A02_w2.tif"
         """
-        with open(path, mode="rb") as fd:
+        with open(path, mode="r") as fd:
             rdr = csv.reader(fd)
             pathnames = sum(rdr, [])
             self.__pipeline.add_pathnames_to_file_list(pathnames)
@@ -1155,7 +1155,7 @@ class PipelineController(object):
         or end of the line, maybe you're asking too much :-)
         """
         with open(path) as fd:
-            pathnames = [p.strip().decode() for p in fd]
+            pathnames = [p.strip() for p in fd]
             self.__pipeline.add_pathnames_to_file_list(pathnames)
 
     def do_export_text_file_list(self, path):
@@ -2075,7 +2075,7 @@ class PipelineController(object):
         t0 = datetime.datetime.now()
         with wx.ProgressDialog(
             "Processing files",
-            "Initializing\n\n",
+            "Initializing",
             parent=self.__frame,
             style=wx.PD_APP_MODAL | wx.PD_CAN_ABORT,
         ) as dlg:
@@ -2110,7 +2110,7 @@ class PipelineController(object):
                     if isWindows:
                         pathname = os.path.normpath(pathname[:2]) + pathname[2:]
 
-                    message[0] = "Processing " + pathname
+                    message[0] = "\nProcessing " + pathname
                     if os.path.isfile(pathname):
                         urls.append(pathname2url(pathname))
                         if len(urls) > 100:
@@ -2123,7 +2123,7 @@ class PipelineController(object):
                                     break
                                 path = os.path.join(dirpath, filename)
                                 urls.append(pathname2url(path))
-                                message[0] = "Processing " + path
+                                message[0] = "\nProcessing " + path
                                 if len(urls) > 100:
                                     queue.put(urls)
                                     urls = []
@@ -2143,9 +2143,10 @@ class PipelineController(object):
                 if waiting_for > 60:
                     minutes = int(waiting_for) / 60
                     seconds = waiting_for % 60
-                    msg += "\nElapsed time: %d minutes, %d seconds" % (minutes, seconds)
+                    msg += "\n\nElapsed time: %d minutes, %d seconds" % (minutes, seconds)
                     msg += "\nConsider using the LoadData module for loading large numbers of images."
                 keep_going, skip = dlg.Pulse(msg)
+                dlg.Fit()
                 return keep_going
 
             while not interrupt[0]:
@@ -2156,7 +2157,7 @@ class PipelineController(object):
                             urls += queue.get(block=False)
                     except Empty:
                         keep_going = update_pulse(
-                            "Adding %d files to file list" % len(urls)
+                            "\nAdding %d files to file list" % len(urls)
                         )
                         self.add_urls(urls)
                 except Empty as err:
@@ -2202,6 +2203,8 @@ class PipelineController(object):
                 sizer.Add(wx.StaticText(dlg, label=instructions), 0, wx.EXPAND)
                 sizer.AddSpacer(2)
             old_parent = self.__path_list_ctrl.Parent
+            old_sizer = self.__path_list_ctrl.GetContainingSizer()
+            old_sizer.Detach(self.__path_list_ctrl)
             self.__path_list_ctrl.Reparent(dlg)
             try:
                 sizer.Add(self.__path_list_ctrl, 1, wx.EXPAND)
@@ -2225,6 +2228,7 @@ class PipelineController(object):
                     cellprofiler.gui.pathlist.EVT_PLC_SELECTION_CHANGED, on_plc_change
                 )
                 result = dlg.ShowModal()
+                sizer.Detach(self.__path_list_ctrl)
                 self.__path_list_ctrl.Unbind(
                     cellprofiler.gui.pathlist.EVT_PLC_SELECTION_CHANGED
                 )
@@ -2234,8 +2238,11 @@ class PipelineController(object):
                     )
                     return None if len(paths) == 0 else paths[0]
                 return None
+            except Exception as e:
+                print("Unable to build file selection panel", e)
             finally:
                 self.__path_list_ctrl.Reparent(old_parent)
+                old_sizer.Insert(0, self.__path_list_ctrl, 1, wx.EXPAND | wx.ALL)
 
     def add_urls(self, urls):
         """Add URLS to the pipeline"""
@@ -2952,14 +2959,10 @@ class PipelineController(object):
                 if hasattr(fig.figure.canvas, "_isDrawn"):
                     fig.figure.canvas._isDrawn = False
                 fig.figure.canvas.Refresh()
-        except:
-            _, exc, tb = sys.exc_info()
-
-            traceback.print_tb(tb, logger)
-
-            error = cellprofiler.gui.dialog.Error("Error", exc.message)
-
-            if error.status is wx.ID_CANCEL:
+        except Exception as exc:
+            logger.exception(exc.__traceback__)
+            error = cellprofiler.gui.dialog.Error("Error", str(exc))
+            if error.status == wx.ID_CANCEL:
                 cancel_progress()
         finally:
             # we need to ensure that the reply_cb gets a reply
@@ -2981,14 +2984,10 @@ class PipelineController(object):
                 )
                 module.display_post_run(self.__workspace, fig)
                 fig.Refresh()
-        except:
-            _, exc, tb = sys.exc_info()
-
-            traceback.print_tb(tb, logger)
-
-            error = cellprofiler.gui.dialog.Error("Error", exc.message)
-
-            if error.status is wx.ID_CANCEL:
+        except Exception as exc:
+            logger.exception(exc.__traceback__)
+            error = cellprofiler.gui.dialog.Error("Error", str(exc))
+            if error.status == wx.ID_CANCEL:
                 cancel_progress()
 
     def module_display_post_group_request(self, evt):
@@ -3007,14 +3006,10 @@ class PipelineController(object):
                 )
                 module.display_post_group(self.__workspace, fig)
                 fig.Refresh()
-        except:
-            _, exc, tb = sys.exc_info()
-
-            traceback.print_tb(tb, logger)
-
-            error = cellprofiler.gui.dialog.Error("Error", exc.message)
-
-            if error.status is wx.ID_CANCEL:
+        except Exception as exc:
+            logger.exception(exc.__traceback__)
+            error = cellprofiler.gui.dialog.Error("Error", str(exc))
+            if error.status == wx.ID_CANCEL:
                 cancel_progress()
         finally:
             evt.reply(Ack())
@@ -3034,14 +3029,10 @@ class PipelineController(object):
         try:
             module = self.__pipeline.modules(exclude_disabled=False)[module_num - 1]
             result = module.handle_interaction(*args, **kwargs)
-        except:
-            _, exc, tb = sys.exc_info()
-
-            traceback.print_tb(tb, logger)
-
-            error = cellprofiler.gui.dialog.Error("Error", exc.message)
-
-            if error.status is wx.ID_CANCEL:
+        except Exception as exc:
+            logger.exception(exc.__traceback__)
+            error = cellprofiler.gui.dialog.Error("Error", str(exc))
+            if error.status == wx.ID_CANCEL:
                 cancel_progress()
         finally:
             # we need to ensure that the reply_cb gets a reply (even if it
@@ -3134,6 +3125,40 @@ class PipelineController(object):
         evtlist[0].reply(Reply(disposition=disposition))
 
         wx.Yield()  # This allows cancel events to remove other exceptions from the queue.
+
+    def sentry_pack_pipeline(self, err_module_name="", err_module_num=0):
+        from sentry_sdk import utils, serializer, push_scope
+        utils.MAX_STRING_LENGTH = 15000
+        serializer.MAX_DATABAG_BREADTH = 25
+        # push_scope will attach data to the next event only
+        with push_scope() as scope:
+            with io.StringIO() as fp:
+                self.__pipeline.dump(fp, save_image_plane_details=False, sanitize=True)
+                pipeline_parts = fp.getvalue().split("\n\n")
+                pipeline_info = {
+                    "error_module": f"{err_module_num:02d}_{err_module_name}",
+                    "header": pipeline_parts.pop(0),
+                    "modules": [module.module_name for module in self.__pipeline.modules(exclude_disabled=False)]
+                }
+                scope.set_context("Pipeline_Info", pipeline_info)
+                index = 1
+                buffer = 0
+                buffer_dict = {}
+                # Sentry hard limits context content to >~10000 characters per container.
+                # To avoid this we send in chunks if the pipeline is large.
+                for idx, part in enumerate(pipeline_parts):
+                    idx += 1
+                    keyname = f"Pipeline_{index:02d}"
+                    buffer += len(part)
+                    module_name = f"{idx:02d}_{part.split(':', 1)[0]}"
+                    buffer_dict[module_name] = part
+                    if buffer > 7500 or idx == len(pipeline_parts):
+                        scope.set_context(f"{keyname}", buffer_dict)
+                        buffer = 0
+                        buffer_dict = {}
+                        index += 1
+            # Log step needs to be here since this triggers sentry
+            logging.error("Failed to run module %s", err_module_name, exc_info=True)
 
     def on_pause(self, event):
         self.__frame.preferences_view.pause(True)
@@ -3347,7 +3372,10 @@ class PipelineController(object):
             if self.workspace_view is not None:
                 self.workspace_view.set_workspace(workspace_model)
         except Exception as instance:
-            logging.error("Failed to run module %s", module.module_name, exc_info=True)
+            if get_telemetry():
+                self.sentry_pack_pipeline(module.module_name, module.module_num)
+            else:
+                logging.error("Failed to run module %s", module.module_name, exc_info=True)
             event = RunException(instance, module)
             self.__pipeline.notify_listeners(event)
             self.__pipeline_list_view.select_one_module(module.module_num)
@@ -3818,6 +3846,13 @@ class PipelineController(object):
         if not self.is_in_debug_mode():
             wx.MessageBox(
                 "Workspace Viewer is only available in Test Mode",
+                style=wx.OK | wx.ICON_ERROR,
+                parent=self.__frame,
+            )
+            return
+        elif self.__pipeline.volumetric():
+            wx.MessageBox(
+                "Workspace Viewer is currently only available with 2D Pipelines",
                 style=wx.OK | wx.ICON_ERROR,
                 parent=self.__frame,
             )

@@ -79,6 +79,9 @@ from ..constants.figure import MODE_MEASURE_LENGTH
 from ..constants.figure import MODE_NONE
 from ..constants.figure import NAV_MODE_NONE
 from ..constants.figure import WINDOW_IDS
+from ..constants.figure import MENU_INTERPOLATION_NEAREST
+from ..constants.figure import MENU_INTERPOLATION_BILINEAR
+from ..constants.figure import MENU_INTERPOLATION_BICUBIC
 from ..help import make_help_menu
 from ..help.content import FIGURE_HELP
 from ..tools import renumber_labels_for_display
@@ -142,7 +145,7 @@ class Figure(wx.Frame):
         self.current_plane = 0
         self.images = {}
         self.colorbar = {}
-        self.sliders = {}
+        self.volumetric = False
         self.subplot_params = {}
         self.subplot_user_params = {}
         self.event_bindings = {}
@@ -150,6 +153,7 @@ class Figure(wx.Frame):
         self.subplot_menus = {}
         self.widgets = []
         self.mouse_down = None
+        self.many_plots = False
         self.remove_menu = []
         self.figure = matplotlib.pyplot.Figure(constrained_layout=True)
         self.figure.set_constrained_layout_pads(
@@ -194,7 +198,7 @@ class Figure(wx.Frame):
                 parent_menu_bar = None
             if parent_menu_bar is not None and isinstance(parent_menu_bar, wx.MenuBar):
                 for menu, label in parent_menu_bar.GetMenus():
-                    if label == "Window":
+                    if "Window" in label:
                         menu_ids = [menu_item.Id for menu_item in menu.MenuItems]
                         for window_id in WINDOW_IDS + [None]:
                             if window_id not in menu_ids:
@@ -220,12 +224,6 @@ class Figure(wx.Frame):
         self.Bind(wx.EVT_MENU, self.on_file_save, id=MENU_FILE_SAVE)
         self.Bind(wx.EVT_MENU, self.on_file_save_table, id=MENU_FILE_SAVE_TABLE)
         self.MenuBar.Append(self.__menu_file, "&File")
-
-        self.__menu_tools = wx.Menu()
-        self.__menu_item_measure_length = self.__menu_tools.AppendCheckItem(
-            MENU_TOOLS_MEASURE_LENGTH, "Measure &length"
-        )
-        self.MenuBar.Append(self.__menu_tools, "&Tools")
 
         self.menu_subplots = wx.Menu()
         self.MenuBar.Append(self.menu_subplots, "Subplots")
@@ -255,10 +253,7 @@ class Figure(wx.Frame):
         self.MenuBar.Append(make_help_menu(figure_help, self), "&Help")
 
     def create_toolbar(self):
-        self.navtoolbar = NavigationToolbar(self.figure.canvas)
-        if wx.VERSION < (2, 9, 1, 1, ""):
-            # avoid crash on latest wx 2.9
-            self.navtoolbar.DeleteToolByPos(6)
+        self.navtoolbar = NavigationToolbar(self.figure.canvas, want_measure=True)
         self.navtoolbar.Bind(EVT_NAV_MODE_CHANGE, self.on_navtool_changed)
 
     def clf(self):
@@ -400,24 +395,20 @@ class Figure(wx.Frame):
         self.Destroy()
 
     def on_navtool_changed(self, event):
-        if (
-            event.EventObject.mode != NAV_MODE_NONE
-            and self.mouse_mode == MODE_MEASURE_LENGTH
-        ):
+        if event.EventObject.mode == "measure":
+            self.on_measure_length(event)
+        elif self.mouse_mode == MODE_MEASURE_LENGTH:
             self.mouse_mode = MODE_NONE
 
-            self.__menu_item_measure_length.Check(False)
 
     def on_measure_length(self, event):
         """Measure length menu item selected."""
-        if self.__menu_item_measure_length.IsChecked():
+        if self.mouse_mode == MODE_NONE:
             self.mouse_mode = MODE_MEASURE_LENGTH
-
-            self.navtoolbar.cancel_mode()
-
-            self.Layout()
-        elif self.mouse_mode == MODE_MEASURE_LENGTH:
+        else:
             self.mouse_mode = MODE_NONE
+            self.navtoolbar.cancel_mode()
+            self.Layout()
 
     def on_button_press(self, event):
         if not hasattr(self, "subplots"):
@@ -734,6 +725,9 @@ class Figure(wx.Frame):
 
         self.dimensions = dimensions
 
+        if max(subplots) > 3:
+            self.many_plots = True
+
         if subplots is None:
             if hasattr(self, "subplots"):
                 delattr(self, "subplots")
@@ -783,8 +777,12 @@ class Figure(wx.Frame):
         y - subplot's row
         """
         fontname = get_title_font_name()
+        if self.many_plots:
+            fontsize = 8
+        else:
+            fontsize = get_title_font_size()
         self.subplot(x, y).set_title(
-            textwrap.fill(title, 30), fontname=fontname, fontsize=get_title_font_size(),
+            textwrap.fill(title, 30 if fontsize > 10 else 50), fontname=fontname, fontsize=fontsize,
         )
 
     def clear_subplot(self, x, y):
@@ -820,9 +818,6 @@ class Figure(wx.Frame):
         Note: Each item is bound to a handler.
         """
         (x, y) = coordinates
-        MENU_INTERPOLATION_NEAREST = wx.NewId()
-        MENU_INTERPOLATION_BILINEAR = wx.NewId()
-        MENU_INTERPOLATION_BICUBIC = wx.NewId()
 
         params = self.subplot_params[(x, y)]
 
@@ -1035,6 +1030,7 @@ class Figure(wx.Frame):
                     max=1000,
                     limited=True,
                     size=wx.Size(35, 22),
+                    integerWidth=4,
                     fractionWidth=1,
                     autoSize=False,
                     style=wx.TE_CENTRE,
@@ -1585,6 +1581,8 @@ class Figure(wx.Frame):
         subplot.set_xlim([0, imshape[1]])
         subplot.set_ylim([imshape[0] - 0.5, -0.5])
         subplot.set_aspect("equal")
+        if self.many_plots:
+            subplot.tick_params(labelsize=6)
 
         # Set title
         if title is not None:
@@ -1698,45 +1696,37 @@ class Figure(wx.Frame):
             hist_fig.figure.canvas.draw()
 
         if self.dimensions == 3:
-            aspect_ratio = 20 if len(self.subplots) == 1 else 10
-            axplane = self.add_helper_axis(subplot, aspect=aspect_ratio)
-            if self.subplots.shape[0] < 3 and self.subplots.shape[1] < 3:
-                # Button placement is dumb and will only work with up to 2x2 subplots.
-                xprev = 0.88
-                xnext = 0.91
-                ybut = 0.075
-                if self.subplots.shape[0] > 1 and x == 0:
-                    xprev -= 0.5
-                    xnext -= 0.5
-                if self.subplots.shape[1] > 1 and y == 0:
-                    ybut = 0.47
-                axprev = self.figure.add_axes([xprev, ybut, 0.03, 0.04])
-                axnext = self.figure.add_axes([xnext, ybut, 0.03, 0.04])
-                subplot.bprev = matplotlib.widgets.Button(axprev, "<")
-                subplot.bnext = matplotlib.widgets.Button(axnext, ">")
-            splane = matplotlib.widgets.Slider(
-                axplane, "Plane", 0, z - 1, valstep=1, valfmt="%02d",
-            )
-            splane.set_val(self.current_plane)
+            self.navtoolbar.set_volumetric()
+            self.navtoolbar.slider.SetValue(self.current_plane)
+            self.navtoolbar.planetext.SetValue(self.current_plane)
+            self.navtoolbar.slider.SetMax(z - 1)
+            self.navtoolbar.planetext.SetMax(z - 1)
 
             def next_plane(event):
-                if splane.val < z - 1:
-                    change_plane(splane.val + 1)
+                if (val := self.navtoolbar.slider.GetValue()) < z - 1:
+                    change_plane(val + 1)
 
             def prev_plane(event):
-                if splane.val > 0:
-                    change_plane(splane.val - 1)
+                if (val := self.navtoolbar.slider.GetValue()) > 0:
+                    change_plane(val - 1)
 
-            def change_plane(val):
-                newplane = int(val)
+            def change_plane(newplane):
                 if newplane == self.current_plane:
                     return
                 else:
                     self.current_plane = newplane
-                    for _, axis_slider in self.sliders.values():
-                        # Use initial value to keep all sliders matched
-                        axis_slider.set_val(newplane)
+                    self.navtoolbar.slider.SetValue(newplane)
+                    self.navtoolbar.planetext.ChangeValue(newplane)
+                    self.navtoolbar.planetext.Update()
+
                     display_plane()
+
+            def change_slider(event):
+                change_plane(event.GetInt())
+
+            def change_text(event):
+                if event.String != '':
+                    change_plane(int(event.String))
 
             def display_plane():
                 numx, numy = self.subplots.shape
@@ -1754,86 +1744,14 @@ class Figure(wx.Frame):
                             if not hasattr(subplot_item, "deleted"):
                                 self.figure.delaxes(subplot_item)
                                 subplot_item.deleted = True
-                        # Updating the slider will force a refresh, so we don't need to explicitly draw
+                self.figure.canvas.draw()
 
-            splane.on_changed(change_plane)
-            if self.subplots.shape[0] < 3 and self.subplots.shape[1] < 3:
-                subplot.bprev.on_clicked(prev_plane)
-                subplot.bnext.on_clicked(next_plane)
-            self.sliders[subplot] = (axplane, splane)
+            self.navtoolbar.nextplane.Bind(wx.EVT_BUTTON, next_plane)
+            self.navtoolbar.prevplane.Bind(wx.EVT_BUTTON, prev_plane)
+            self.navtoolbar.slider.Bind(wx.EVT_SLIDER, change_slider)
+            self.navtoolbar.planetext.Bind(wx.EVT_TEXT, change_text)
 
         return subplot
-
-    @staticmethod
-    def add_helper_axis(parents, fraction=0.3, shrink=1.0, aspect=20):
-        # This is a modification of the matplotlib colorbar axis creation function,
-        # with some of the unnecessary bulk stripped out.
-
-        anchor = "C"
-        parent_anchor = "C"
-        parents_iterable = numpy.iterable(parents)
-        parents = numpy.atleast_1d(parents).ravel()
-        # check if using constrained_layout:
-        try:
-            gs = parents[0].get_subplotspec().get_gridspec()
-            using_constrained_layout = gs._layoutbox is not None
-        except AttributeError:
-            using_constrained_layout = False
-        pad = 0.15
-        if using_constrained_layout:
-            pad = 0.02
-        fig = parents[0].get_figure()
-        # take a bounding box around all of the given axes
-        parents_bbox = matplotlib.transforms.Bbox.union(
-            [ax.get_position(original=True).frozen() for ax in parents]
-        )
-
-        pb = parents_bbox
-        pbcb, _, pb1 = pb.splity(fraction, fraction + pad)
-
-        # define the aspect ratio in terms of y's per x rather than x's per y
-        aspect = 1.0 / aspect
-
-        # define a transform which takes us from old axes coordinates to
-        # new axes coordinates
-        shrinking_trans = matplotlib.transforms.BboxTransform(parents_bbox, pb1)
-
-        # transform each of the axes in parents using the new transform
-        for ax in parents:
-            new_posn = shrinking_trans.transform(ax.get_position(original=True))
-            new_posn = matplotlib.transforms.Bbox(new_posn)
-            ax._set_position(new_posn)
-            if parent_anchor is not False:
-                ax.set_anchor(parent_anchor)
-        new_ax = fig.add_axes(pbcb, label="<colorbar>")
-
-        # Make a layoutbox for the new axis.
-        if not using_constrained_layout:
-            # no layout boxes:
-            lb = None
-            lbpos = None
-            # and we need to set the aspect ratio by hand...
-            new_ax.set_aspect(aspect, anchor=anchor, adjustable="box")
-        else:
-            import matplotlib._constrained_layout as constrained_layout
-
-            if not parents_iterable:
-                # this is a single axis...
-                ax = parents[0]
-                lb, lbpos = constrained_layout.layoutcolorbarsingle(
-                    ax, new_ax, shrink, aspect, "bottom", pad=pad
-                )
-            else:  # there is more than one parent, so lets use gridspec
-                # the colorbar will be a sibling of this gridspec, so the
-                # parent is the same parent as the gridspec.  Either the figure,
-                # or a subplotspec.
-
-                lb, lbpos = constrained_layout.layoutcolorbargridspec(
-                    parents, new_ax, shrink, aspect, "bottom", pad
-                )
-        new_ax._layoutbox = lb
-        new_ax._poslayoutbox = lbpos
-        return new_ax
 
     @staticmethod
     def update_line_labels(subplot, kwargs):
@@ -2163,6 +2081,9 @@ class Figure(wx.Frame):
                         numpy.zeros(image.shape[:2], image.dtype),
                     ]
                 )
+            # Apply display bounds
+            if vmin is not None and vmax is not None:
+                image = skimage.exposure.rescale_intensity(image, in_range=(vmin, vmax))
         if not self.is_color_image(image):
             if not normalize:
                 if image.max() < 255:
@@ -2666,5 +2587,7 @@ class Figure(wx.Frame):
     def is_color_image(self, image):
         if self.dimensions == 2:
             return image.ndim == 3 and image.shape[2] >= 2
+        elif image.ndim == 3:
+            return image.shape[2] >= 2
         else:
             return image.ndim == 4 and image.shape[3] >= 2
